@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>Ucapan — Fatimah &amp; Naravit</title>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+SC:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;1,500;1,600&family=Lora:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--wine:#4a0b1a;--burg:#5c0f22;--gold:#b8924a;--gold2:#f6dfa0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#3f0816;overflow:hidden}
+body{display:flex;justify-content:center;align-items:center}
+.stage{position:relative;overflow:hidden;isolation:isolate;flex:none;
+  height:100vh;height:100dvh;width:calc(100vh*9/16);width:calc(100dvh*9/16);max-width:100vw;container-type:size;
+  background:radial-gradient(ellipse 80% 55% at 50% 42%,rgba(231,161,182,.38),transparent 70%),radial-gradient(ellipse 120% 80% at 50% 100%,#9b1c3d 0%,transparent 60%),linear-gradient(180deg,#3f0816,#6a1029 55%,#8a1a3a)}
+.stage::after{content:"";position:absolute;inset:0;z-index:90;pointer-events:none;box-shadow:inset 0 0 14cqw rgba(30,2,10,.55)}
+.batik{position:absolute;inset:0;opacity:.2;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke='%23ebcf93' stroke-width='1.1'><ellipse cx='40' cy='20' rx='11' ry='19'/><ellipse cx='40' cy='60' rx='11' ry='19'/><ellipse cx='20' cy='40' rx='19' ry='11'/><ellipse cx='60' cy='40' rx='19' ry='11'/><circle cx='40' cy='40' r='2.2' fill='%23ebcf93'/></g></svg>");background-size:16cqw;
+  -webkit-mask-image:radial-gradient(ellipse 85% 70% at 50% 45%,#000 20%,transparent 100%);mask-image:radial-gradient(ellipse 85% 70% at 50% 45%,#000 20%,transparent 100%)}
+.view{position:absolute;inset:0;display:none}.view.on{display:block}
+.nav-top-left{position:absolute;z-index:30;left:4cqw;top:4cqw;display:flex;gap:2cqw;}
+.nav-top-right{position:absolute;z-index:30;right:4cqw;top:4cqw;}
+.back{font:700 3.4cqw 'Cormorant SC',serif;letter-spacing:.1em;color:#fff;background:rgba(38,3,14,.7);border:1px solid rgba(246,223,160,.6);border-radius:5cqw;padding:2cqw 3.6cqw;text-decoration:none;cursor:pointer}
+
+/* ===== FORM ===== */
+.edge{position:absolute;pointer-events:none;z-index:2}
+.edge img{display:block;width:100%;height:auto}
+.e4{left:-8cqw;top:-8cqw;width:56cqw}.e7{right:-8cqw;bottom:-8cqw;width:56cqw}
+.panel{position:absolute;z-index:10;left:6%;right:6%;top:50%;transform:translateY(-50%);max-height:82%;overflow-y:auto;text-align:center;color:#fff;
+  background:rgba(38,3,14,.8);border:1.5px solid rgba(246,223,160,.8);border-radius:4cqw;padding:5cqw 5.5cqw 6cqw;box-shadow:0 2cqw 8cqw rgba(0,0,0,.55)}
+.kicker{font:700 3.6cqw 'Cormorant SC',serif;letter-spacing:.3em;color:var(--gold2)}
+.ttl{font:400 14cqw/1.05 'Pinyon Script',cursive;margin:1cqw 0 1.5cqw;text-shadow:0 .5cqw 2cqw rgba(0,0,0,.8)}
+.sub{font:500 4.1cqw/1.5 'Lora',serif;margin-bottom:3cqw}
+label{display:block;text-align:left;font:700 3.5cqw 'Cormorant SC',serif;letter-spacing:.2em;color:var(--gold2);margin:3cqw 0 1.5cqw}
+input,textarea{width:100%;font:500 4.6cqw 'Lora',serif;color:#2a0510;background:#fffaf0;border:2px solid transparent;border-radius:2.2cqw;padding:3cqw 3.4cqw;outline:none}
+input:focus,textarea:focus{border-color:var(--gold2)}
+textarea{height:30cqw;resize:none;line-height:1.45}
+.cnt{text-align:right;font:500 3cqw 'Lora',serif;color:rgba(255,255,255,.8);margin-top:1cqw}
+.btn{display:block;width:100%;border:0;cursor:pointer;font:700 4cqw 'Cormorant SC',serif;letter-spacing:.14em;color:var(--wine);background:linear-gradient(135deg,#f6e2b0,#d9b46a);padding:3.4cqw;border-radius:7cqw;box-shadow:0 1.5cqw 5cqw rgba(0,0,0,.5);margin-top:4cqw}
+.btn.alt{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(246,223,160,.7);font-size:3.6cqw}
+.err{color:#ffb4b4;font:600 3.4cqw 'Lora',serif;margin-top:2cqw;min-height:4cqw}
+
+/* ===== KARTU ===== */
+.card{position:absolute;left:50%;top:46%;width:84cqw;height:120cqw;margin:-60cqw 0 0 -42cqw;overflow:hidden;border-radius:1.5cqw;
+  background:radial-gradient(circle at 0 0,rgba(110,15,40,.6),transparent 40%),radial-gradient(circle at 100% 100%,rgba(110,15,40,.55),transparent 42%),#fbf1ec;
+  box-shadow:0 3cqw 10cqw rgba(0,0,0,.6);transition:transform .9s cubic-bezier(.65,0,.25,1),opacity .9s ease;will-change:transform}
+.card .f4,.card .f7{position:absolute;z-index:1;width:44cqw;height:auto;pointer-events:none}
+.card .f4{left:-9cqw;top:-8cqw}.card .f7{right:-9cqw;bottom:-8cqw}
+.card .f7.flip{transform:scaleX(-1)}
+.fr1{position:absolute;inset:2.2cqw;border:.35cqw solid var(--burg);z-index:2;pointer-events:none}
+.fr2{position:absolute;inset:3.4cqw;border:1px solid var(--gold);z-index:2;pointer-events:none}
+.arch{position:absolute;left:8cqw;right:8cqw;top:9cqw;bottom:8cqw;border:1px solid var(--gold);border-radius:34cqw 34cqw 1.5cqw 1.5cqw;z-index:2;pointer-events:none}
+.in{position:absolute;left:12cqw;right:12cqw;top:9cqw;bottom:8cqw;z-index:3;display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:9cqw;color:var(--burg)}
+.mono{width:14cqw;height:14cqw;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;gap:1.4cqw;font:600 6cqw 'Cormorant Garamond',serif;color:var(--burg)}
+.mono i{width:1px;height:7cqw;background:var(--gold)}
+.pre{font:700 2.5cqw 'Cormorant SC',serif;letter-spacing:.3em;margin-top:3.5cqw;color:#6b4a2a}
+.nm{font:700 4.3cqw 'Cormorant SC',serif;letter-spacing:.1em;margin-top:1.4cqw;color:var(--burg);white-space:nowrap}
+.dv{display:flex;align-items:center;gap:2cqw;margin:2.4cqw 0;color:var(--gold);font-size:3cqw;width:70%}
+.dv b{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.msg{flex:1;display:flex;align-items:center;justify-content:center;width:100%}
+.msg p{font:italic 600 4.1cqw/1.45 'Cormorant Garamond',serif;color:#3a0a16;word-break:break-word;text-shadow:0 0 1.5cqw rgba(251,241,236,.9)}
+.wm{font:600 2.6cqw 'Cormorant SC',serif;letter-spacing:.3em;color:#6b4a2a;margin-top:1.5cqw}
+.from{font:400 8cqw/1.1 'Pinyon Script',cursive;color:var(--burg);margin:1cqw 0 2cqw;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-shadow:0 0 1.5cqw rgba(251,241,236,.9)}
+
+/* ===== SLIDE ===== */
+.show-bar{position:absolute;z-index:30;left:0;right:0;bottom:5cqw;display:flex;justify-content:space-between;align-items:center;padding:0 5cqw}
+.cn{font:600 3.6cqw 'Cormorant SC',serif;letter-spacing:.2em;color:#fff;text-shadow:0 .3cqw 1cqw #000}
+.show-bar .btn{width:auto;margin:0;padding:2.6cqw 5cqw;font-size:3.6cqw}
+.show-ttl{position:absolute;z-index:20;top:4.5cqw;left:0;right:0;text-align:center;font:400 9cqw 'Pinyon Script',cursive;color:#fff;text-shadow:0 .4cqw 2cqw #000;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="batik"></div>
+
+  <!-- ====== FORM ====== -->
+  <div class="view on" id="vForm">
+    <div class="edge e4"><img data-k="bunga4" alt=""></div>
+    <div class="edge e7"><img data-k="bunga7" alt=""></div>
+    <div class="nav-top-left">
+      <a class="back" href="javascript:history.back()">← Kembali</a>
+      <a class="back" href="map.html">Map →</a>
+    </div>
+    <div class="panel">
+      <div class="kicker">BUKU TAMU</div>
+      <h1 class="ttl">Kirim Ucapan</h1>
+      <p class="sub">Tuliskan doa terbaikmu untuk <b id="own"></b></p>
+      <label for="nama">NAMA KAMU</label>
+      <input id="nama" type="text" maxlength="28" placeholder="Contoh: Budi" autocomplete="name">
+      <label for="isi">UCAPAN</label>
+      <textarea id="isi" maxlength="160" placeholder="Selamat menempuh hidup baru ..."></textarea>
+      <div class="cnt"><span id="c">0</span>/160</div>
+      <div class="err" id="err"></div>
+      <button class="btn" id="kirim">KIRIM UCAPAN</button>
+      <button class="btn alt" id="lihat">LIHAT SEMUA UCAPAN</button>
+    </div>
+  </div>
+
+  <!-- ====== SLIDE KARTU ====== -->
+  <div class="view" id="vShow">
+    <div class="show-ttl">Ucapan &amp; Doa</div>
+    <div class="nav-top-right">
+      <a class="back" href="map.html">Map →</a>
+    </div>
+    <div id="track"></div>
+    <div class="show-bar"><span class="cn" id="cn"></span><button class="btn" id="tulis">TULIS UCAPAN</button></div>
+  </div>
+</div>
+
+<script>
+/* ================= ATUR DI SINI ================= */
+const NAMA_A='Fatimah', NAMA_B='Naravit';
+const DB_URL='';          // isi alamat Firebase Realtime Database supaya ucapan terkumpul untuk semua orang. Kosong = tersimpan di browser ini saja
+const FLIP7=false;        // ganti true kalau bunga7 di kanan bawah menghadap arah yang salah
+const FL={bunga4:'bunga4.png',bunga7:'bunga7.png'};
+const DETIK=3;            // jeda geser otomatis
+/* ================================================ */
+const $=id=>document.getElementById(id);$('own').textContent=NAMA_A+' & '+NAMA_B;
+
+/* ---- bunga sementara kalau file belum ada ---- */
+const svg=s=>'data:image/svg+xml;utf8,'+encodeURIComponent(s);
+function bl(cx,cy,r,c1,c2){let p='';for(let i=0;i<8;i++)p+=`<ellipse cx="${cx}" cy="${cy-r*.62}" rx="${r*.36}" ry="${r*.62}" fill="${i%2?c1:c2}" transform="rotate(${i*45} ${cx} ${cy})"/>`;return p+`<circle cx="${cx}" cy="${cy}" r="${r*.2}" fill="#f4c25b"/>`}
+const PH={
+bunga4:svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M0 0h300C260 90 190 120 120 200 70 250 30 270 0 300Z" fill="#2c5a3a"/>${bl(70,80,60,'#f08aa5','#c2294f')}${bl(170,60,44,'#ffc0d0','#e0587c')}${bl(60,190,42,'#ffc0d0','#d93a65')}</svg>`),
+bunga7:svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M300 300H0C50 220 110 190 180 120 230 80 270 40 300 0Z" fill="#2c5a3a"/>${bl(230,230,58,'#ffc0d0','#d93a65')}${bl(120,250,44,'#f08aa5','#c2294f')}${bl(240,120,42,'#ffc0d0','#e0587c')}</svg>`)};
+function fix(img){const k=img.dataset.k;img.onerror=()=>{img.onerror=null;img.src=PH[k]};img.src=FL[k]}
+document.querySelectorAll('img[data-k]').forEach(fix);
+
+/* ---- penyimpanan ---- */
+const LS='ucapan_fn',DB=DB_URL.replace(/\/$/,'');
+async function loadAll(){
+  if(DB){try{const d=await (await fetch(DB+'/ucapan.json')).json();return d?Object.values(d).sort((a,b)=>a.t-b.t):[]}catch(e){}}
+  try{return JSON.parse(localStorage.getItem(LS)||'[]')}catch(e){return[]}
+}
+async function saveOne(o){
+  if(DB){try{const r=await fetch(DB+'/ucapan.json',{method:'POST',body:JSON.stringify(o)});return r.ok}catch(e){return false}}
+  try{const a=JSON.parse(localStorage.getItem(LS)||'[]');a.push(o);localStorage.setItem(LS,JSON.stringify(a));return true}catch(e){return false}
+}
+
+/* ---- kartu ---- */
+function makeCard(o){
+  const d=document.createElement('div');d.className='card';
+  d.innerHTML=`<img class="f4" data-k="bunga4" alt=""><img class="f7${FLIP7?' flip':''}" data-k="bunga7" alt="">
+  <div class="fr1"></div><div class="fr2"></div><div class="arch"></div>
+  <div class="in">
+    <div class="mono"><span>${NAMA_A[0]}</span><i></i><span>${NAMA_B[0]}</span></div>
+    <div class="pre">UCAPAN &amp; DOA UNTUK</div>
+    <div class="nm">${NAMA_A.toUpperCase()} &amp; ${NAMA_B.toUpperCase()}</div>
+    <div class="dv"><b></b>♥<b></b></div>
+    <div class="msg"><p></p></div>
+    <div class="wm">DENGAN CINTA</div>
+    <div class="from"></div>
+  </div>`;
+  d.querySelector('.msg p').textContent=o?o.isi:'Belum ada ucapan. Jadilah yang pertama menulis doa untuk kami.';
+  d.querySelector('.from').textContent=o?o.nama:'Tamu Undangan';
+  d.querySelectorAll('img[data-k]').forEach(fix);
+  return d;
+}
+
+/* ---- slide ---- */
+let list=[],idx=0,timer,cards=[];
+function pos(){
+  cards.forEach((c,i)=>{const d=i-idx;
+    c.style.transform=d===0?'none':`translateX(${Math.max(-2,Math.min(2,d))*118}%) rotate(${Math.max(-2,Math.min(2,d))*7}deg) scale(.9)`;
+    c.style.opacity=d===0?1:0;c.style.pointerEvents='none';c.style.zIndex=d===0?5:1});
+  $('cn').textContent=list.length?`${idx+1} / ${list.length}`:'';
+}
+function arm(){clearTimeout(timer);if(cards.length>1)timer=setTimeout(()=>{idx=(idx+1)%cards.length;pos();arm()},DETIK*1000)}
+function next(){if(cards.length<2)return;idx=(idx+1)%cards.length;pos();arm()}
+function build(start){
+  $('track').innerHTML='';cards=(list.length?list:[null]).map(o=>{const c=makeCard(o);$('track').appendChild(c);return c});
+  idx=Math.min(start??0,cards.length-1);pos();arm();
+}
+async function showSlides(start){
+  list=await loadAll();
+  $('vForm').classList.remove('on');$('vShow').classList.add('on');
+  build(start==='last'?list.length-1:0);
+}
+$('vShow').addEventListener('click',e=>{if(e.target.closest('#tulis') || e.target.closest('.nav-top-right'))return;next()});
+$('tulis').addEventListener('click',e=>{e.stopPropagation();clearTimeout(timer);$('vShow').classList.remove('on');$('vForm').classList.add('on')});$('lihat').addEventListener('click',()=>showSlides(0));
+
+/* ---- form ---- */
+$('isi').addEventListener('input',()=>$('c').textContent=$('isi').value.length);$('kirim').addEventListener('click',async()=>{
+  const nama=$('nama').value.trim(),isi=$('isi').value.trim();
+  if(!nama){$('err').textContent='Isi namamu dulu ya.';return}
+  if(!isi){$('err').textContent='Tulis ucapannya dulu ya.';return}
+  $('err').textContent='';$('kirim').textContent='MENGIRIM...';
+  const ok=await saveOne({nama,isi,t:Date.now()});
+  $('kirim').textContent='KIRIM UCAPAN';
+  if(!ok){$('err').textContent='Gagal menyimpan, coba lagi.';return}$('nama').value='';$('isi').value='';$('c').textContent=0;
+  showSlides('last');
+});
+</script>
+</body>
+</html>

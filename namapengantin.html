@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mempelai — Fatimah &amp; Naravit</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Cormorant+SC:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wine:#4a0b1a; --burgundy:#7a1230; --crimson:#a3203f;
+    --rose:#e7a1b6; --gold:#ebcf93; --cream:#fcefd9;
+    --breath:6.4s;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#3f0816;overflow:hidden}
+  body{display:flex;justify-content:center;align-items:center}
+
+  /* ===== PANGGUNG ===== */
+  .stage{
+    position:relative; overflow:hidden; isolation:isolate; flex:none;
+    height:100vh; height:100dvh;
+    width:calc(100vh * 9 / 16); width:calc(100dvh * 9 / 16);
+    container-type:size;
+    background:
+      radial-gradient(ellipse 80% 55% at 50% 42%, rgba(231,161,182,.38), transparent 70%),
+      radial-gradient(ellipse 120% 80% at 50% 100%, #9b1c3d 0%, transparent 60%),
+      linear-gradient(180deg, #3f0816 0%, #6a1029 55%, #8a1a3a 100%);
+  }
+  
+  .batik{
+    position:absolute; inset:0; z-index:0; opacity:.18;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke='%23ebcf93' stroke-width='1.1'><ellipse cx='40' cy='20' rx='11' ry='19'/><ellipse cx='40' cy='60' rx='11' ry='19'/><ellipse cx='20' cy='40' rx='19' ry='11'/><ellipse cx='60' cy='40' rx='19' ry='11'/><circle cx='40' cy='40' r='2.2' fill='%23ebcf93'/></g></svg>");
+    background-size:16cqw;
+    -webkit-mask-image:radial-gradient(ellipse 85% 70% at 50% 45%, #000 20%, transparent 100%);
+            mask-image:radial-gradient(ellipse 85% 70% at 50% 45%, #000 20%, transparent 100%);
+  }
+
+  .glow{position:absolute;left:50%;top:44%;width:90cqw;height:90cqw;translate:-50% -50%;z-index:1;
+    background:radial-gradient(circle, rgba(255,205,215,.35), transparent 62%);opacity:0;transition:opacity 3s ease 1s}
+  .stage.go .glow{opacity:1}
+  .stage::after{content:"";position:absolute;inset:0;z-index:20;pointer-events:none;
+    box-shadow:inset 0 0 14cqw rgba(30,2,10,.55)}
+
+  .fly{
+    position:absolute; will-change:transform, opacity;
+    transform:translate3d(0, 3cqw, 0) scale(var(--s, 0.9)); 
+    opacity: 0;
+  }
+  .stage.go .fly{
+    transform:translate3d(0, 0, 0) scale(1); 
+    opacity: 1;
+    transition: transform 2.5s cubic-bezier(.33,1,.68,1) var(--d,0s), opacity 2.5s ease var(--d,0s);
+  }
+  
+  .fly img,.fly .sw{display:block;width:100%;height:auto;-webkit-user-drag:none;user-select:none}
+  
+  .sw{will-change:transform;transform-origin:var(--o,50% 100%);
+      animation:breath var(--breath) ease-in-out infinite alternate;animation-delay:var(--ph,0s)}
+  @keyframes breath{
+    from{transform:translate3d(calc(var(--tx,0%) * -1),0,0) rotate(calc(var(--a,1.5deg) * -1))}
+    to  {transform:translate3d(var(--tx,0%),0,0) rotate(var(--a,1.5deg))}
+  }
+  .rev .sw{animation-direction:alternate-reverse}
+
+  /* Bunga Atas */
+  .b6.top-center { left:0; top:-3%; width:100%; z-index:7; display:flex; justify-content:center; }
+  .b6.top-center .sw { width: 95%; --o: 50% 0%; --a: 2.5deg; --tx: 0%; }
+
+  /* Rumah & Foto Pengantin Sejajar */
+  .rumah{left:0;width:100%;top:52%;height:0;z-index:3;display:flex;justify-content:center;align-items:center;pointer-events:none}
+  .rumah .sw{flex:none;width:65%;animation:house 9.5s ease-in-out infinite alternate;transform-origin:50% 50%}
+  @keyframes house{
+    from{transform:translate3d(0,.6%,0) scale(1)}
+    to  {transform:translate3d(0,-1.4%,0) scale(1.022)}
+  }
+
+  .pengantin{left:0;width:100%;top:52%;height:0;z-index:6;display:flex;justify-content:center;align-items:center;pointer-events:none}
+  .pengantin .sw{flex:none;width:72%;transform-origin:50% 50%}
+
+  /* Bunga Bawah */
+  .row3{left:-8%;width:116%;bottom:-5%;z-index:5;display:flex}
+  .row3 .it{flex:0 0 auto;width:30%;margin-left:-8%;position:relative}
+  .row3 .it:first-child{margin-left:0}
+  .row3 .it:nth-child(even){z-index:1}
+  .row3 .it:nth-child(even) img{transform:scaleX(-1)}
+  .row3 .sw{--a:1deg;--tx:1.5%}
+
+  .b1{bottom:-6%;z-index:6;width:32%}
+  .b1.a{left:-5%} .b1.b{right:-5%} .b1.c{left:38%;width:22%;bottom:-7%}
+  .b1 .sw{--a:1.8deg;--tx:1%}
+
+  /* Kotak Nama (Diubah jadi desain floating glassmorphism) */
+  .name-box {
+    position: absolute;
+    top: 48%;
+    width: 34%; /* Diperlebar agar nama orang tua rapi */
+    padding: 3cqw 1.5cqw;
+    background: rgba(45, 5, 17, 0.75); /* Sedikit lebih transparan */
+    border: 1.5px solid var(--gold);
+    border-radius: 16px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 10;
+    text-align: center;
+    opacity: 0;
+  }
+
+  .box-right { right: 9%; }
+  .box-left { left: 9%; }
+
+  /* Animasi Masuk lalu Berubah Menjadi Mengambang */
+  .stage.show-right .box-right,
+  .stage.show-left .box-left {
+    animation: 
+      masuk 0.8s cubic-bezier(.33,1,.68,1) forwards, 
+      ngambang 3.5s ease-in-out infinite 0.8s; /* 0.8s delay menunggu animasi masuk selesai */
+  }
+
+  @keyframes masuk {
+    from { opacity: 0; transform: translateY(-30%) scale(0.85); }
+    to { opacity: 1; transform: translateY(-50%) scale(1); }
+  }
+
+  @keyframes ngambang {
+    0% { transform: translateY(-50%) scale(1); box-shadow: 0 5px 15px rgba(0,0,0,0.6); }
+    50% { transform: translateY(-53%) scale(1.02); box-shadow: 0 18px 30px rgba(235, 207, 147, 0.12); border-color: #fff; }
+    100% { transform: translateY(-50%) scale(1); box-shadow: 0 5px 15px rgba(0,0,0,0.6); border-color: var(--gold); }
+  }
+
+  .name-title {
+    font-family: 'Cormorant SC', Georgia, serif;
+    font-weight: 600;
+    font-size: 2.5cqw;
+    color: var(--gold);
+    letter-spacing: .1cqw;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+  }
+
+  .name-script {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 3cqw;
+    color: #ffffff;
+    margin-top: .6cqw;
+    line-height: 1.2;
+    letter-spacing: .05cqw;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+  }
+
+  /* Gaya Teks untuk Nama Orang Tua */
+  .name-parents {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 1.2cqw;
+    color: var(--cream);
+    margin-top: 1.5cqw;
+    line-height: 1.5;
+    opacity: 0.9;
+  }
+  
+  .name-parents strong {
+    font-weight: 500;
+    font-size: 1.3cqw;
+    color: #fff;
+  }
+
+  /* Kelopak Jatuh */
+  .petal{position:absolute;top:-6%;z-index:9;width:2.6cqw;height:3.6cqw;border-radius:80% 0 80% 0;
+         background:linear-gradient(135deg,#ffc2d1,#d9456f);opacity:0;pointer-events:none;
+         animation:fall var(--t) linear infinite;animation-delay:var(--w)}
+  .stage.go .petal{opacity:.85}
+  @keyframes fall{
+    0%{transform:translate3d(0,0,0) rotate(0)}
+    50%{transform:translate3d(var(--x),60cqh,0) rotate(200deg)}
+    100%{transform:translate3d(calc(var(--x) * -.4),118cqh,0) rotate(420deg)}
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <div class="batik"></div>
+  <div class="glow"></div>
+
+  <!-- BUNGA ATAS -->
+  <div class="fly b6 top-center" data-g="b6"><div class="sw"><img data-key="bunga6" alt=""></div></div>
+
+  <!-- RUMAH & FOTO PENGANTIN (Sejajar) -->
+  <div class="fly rumah" data-g="rumah"><div class="sw"><img data-key="rumah" alt=""></div></div>
+  <div class="fly pengantin" data-g="pengantin"><div class="sw"><img data-key="pengantin1" alt=""></div></div>
+
+  <!-- BUNGA BAWAH -->
+  <div class="fly row3" data-g="bottom">
+    <div class="it"><div class="sw" style="--ph:-.2s"><img data-key="bunga3" alt=""></div></div>
+    <div class="it"><div class="sw" style="--ph:-1.4s"><img data-key="bunga3" alt=""></div></div>
+    <div class="it"><div class="sw" style="--ph:-.8s"><img data-key="bunga3" alt=""></div></div>
+    <div class="it"><div class="sw" style="--ph:-2s"><img data-key="bunga3" alt=""></div></div>
+  </div>
+
+  <div class="fly b1 a" data-g="bottom"><div class="sw" style="--ph:-.6s"><img data-key="bunga1" alt=""></div></div>
+  <div class="fly b1 b rev" data-g="bottom"><div class="sw" style="--ph:-1.6s"><img data-key="bunga1" alt=""></div></div>
+  <div class="fly b1 c" data-g="bottom"><div class="sw" style="--ph:-1s"><img data-key="bunga1" alt=""></div></div>
+
+  <!-- KOTAK NAMA KANAN (Pond Naravit - Pria) -->
+  <div class="name-box box-right">
+    <div class="name-title">Mempelai Pria</div>
+    <div class="name-script">Pond Naravit</div>
+    <div class="name-parents">
+      Putra dari<br>
+      <strong>Bpk. Somchai &amp; Ibu Mali</strong>
+    </div>
+  </div>
+
+  <!-- KOTAK NAMA KIRI (Siti Nur Fatimah - Wanita) -->
+  <div class="name-box box-left">
+    <div class="name-title">Mempelai Wanita</div>
+    <div class="name-script">Siti Nur Fatimah</div>
+    <div class="name-parents">
+      Putri dari<br>
+      <strong>Bpk. Budi Santoso &amp; Ibu Sri Rahayu</strong>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SRC = {
+  bunga6     : 'bunga6.png',
+  bunga3     : 'bunga3.png',
+  bunga1     : 'bunga1.png',
+  rumah      : 'rumah.png',
+  pengantin1 : 'pengantin1.png'
+};
+
+const stage = document.getElementById('stage');
+const imgs  = [...document.querySelectorAll('img[data-key]')];
+
+const svg = s => 'data:image/svg+xml;utf8,' + encodeURIComponent(s);
+function blossom(cx,cy,r,c1,c2){
+  let p=''; for(let i=0;i<8;i++){const a=i*45;
+    p+=`<ellipse cx="${cx}" cy="${cy-r*.62}" rx="${r*.36}" ry="${r*.62}" fill="${i%2?c1:c2}" transform="rotate(${a} ${cx} ${cy})"/>`}
+  return p+`<circle cx="${cx}" cy="${cy}" r="${r*.2}" fill="#f4c25b"/>`;
+}
+const PH = {
+  bunga6: svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M0 0h300C260 90 190 120 120 200 70 250 30 270 0 300Z" fill="#2c5a3a"/>${blossom(70,80,60,'#f08aa5','#c2294f')}${blossom(170,60,44,'#ffc0d0','#e0587c')}${blossom(60,190,42,'#ffc0d0','#d93a65')}</svg>`),
+  bunga3: svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260"><path d="M0 260V150c60-40 110 10 200-20s150 10 200-10v140Z" fill="#2c5a3a"/>${blossom(70,150,52,'#ffc0d0','#d93a65')}${blossom(190,120,60,'#f08aa5','#a3203f')}${blossom(310,150,50,'#ffc0d0','#e0587c')}${blossom(130,215,40,'#f08aa5','#c2294f')}${blossom(260,220,44,'#ffc0d0','#d93a65')}</svg>`),
+  bunga1: svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 380"><path d="M150 380V170" stroke="#2c5a3a" stroke-width="10"/><path d="M150 300c-60-10-90-50-100-90 50 0 90 30 100 90ZM150 270c60-10 90-50 100-90-50 0-90 30-100 90Z" fill="#3b7a4d"/>${blossom(150,120,95,'#ffc0d0','#c2294f')}</svg>`),
+  rumah: svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 440"><path d="M350 20 480 150H220Z" fill="#8a3a2a"/><path d="M150 150h400l-40 60H190Z" fill="#a24a35"/><rect x="190" y="210" width="320" height="170" fill="#5b2a1c"/><rect x="310" y="240" width="80" height="140" rx="6" fill="#d8a85a"/><g fill="#e6c27a"><rect x="215" y="240" width="70" height="90" rx="4"/><rect x="415" y="240" width="70" height="90" rx="4"/></g><rect x="170" y="380" width="360" height="22" fill="#3b1810"/></svg>`),
+  pengantin1: svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><rect width="400" height="500" rx="20" fill="#6a1029"/><circle cx="200" cy="200" r="90" fill="#ebcf93" opacity="0.3"/><text x="200" y="210" font-family="serif" font-size="24" fill="#fcefd9" text-anchor="middle">pengantin1.png</text></svg>`)
+};
+
+let usedFallback = false;
+function load(img, url){
+  return new Promise(res=>{
+    img.onload = ()=>res(); 
+    img.onerror = ()=>{ usedFallback = true; img.onerror=null; img.onload=()=>res(); img.src = PH[img.dataset.key]; };
+    img.src = url;
+  });
+}
+const loadAll = () => Promise.all(imgs.map(i => load(i, SRC[i.dataset.key])));
+
+for(let i=0;i<12;i++){
+  const p=document.createElement('i'); p.className='petal';
+  p.style.left=(Math.random()*100)+'%';
+  p.style.setProperty('--t',(9+Math.random()*7)+'s');
+  p.style.setProperty('--w',(-Math.random()*14)+'s');
+  p.style.setProperty('--x',((Math.random()-.5)*28)+'cqw');
+  p.style.scale=(.7+Math.random()*.8);
+  stage.appendChild(p);
+}
+
+const CFG = {
+  b6        :{ s:0.9, d:0.2, t:2 },
+  bottom    :{ s:0.9, d:0.4, t:2 },
+  rumah     :{ s:0.9, d:0.6, t:2 },
+  pengantin :{ s:0.9, d:0.8, t:2 }
+};
+
+function start(){
+  stage.classList.remove('go','show-right','show-left');
+  const flys = [...stage.querySelectorAll('.fly')];
+  
+  flys.forEach(f=>{
+    const g = f.dataset.g;
+    const c = CFG[g] || {s:0.9, d:0, t:2};
+    f.style.setProperty('--s', c.s);
+    f.style.setProperty('--d', c.d+'s');
+    f.style.setProperty('--dur', c.t+'s');
+  });
+  
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    stage.classList.add('go');
+    
+    // Kotak kanan (Pond Naravit)
+    setTimeout(() => {
+      stage.classList.add('show-right');
+    }, 800);
+
+    // Kotak kiri (Siti Nur Fatimah)
+    setTimeout(() => {
+      stage.classList.add('show-left');
+    }, 3800);
+
+    // Pindah ke map.html
+    setTimeout(() => {
+      window.location.href = 'cerita.html';
+    }, 6800);
+
+  }));
+}
+
+(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(loadAll).then(()=>{
+  start();
+});
+</script>
+</body>
+</html>

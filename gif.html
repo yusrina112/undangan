@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Amplop Digital — Fatimah &amp; Naravit</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--wine:#4a0b1a;--gold:#f6dfa0;--cream:#fff6e6;--breath:6.4s;--fs:4.2cqw}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#3f0816;overflow:hidden}
+body{display:flex;justify-content:center;align-items:center}
+.stage,.stage *{font-family:'Poppins',sans-serif!important;font-size:var(--fs)!important;line-height:1.55}
+.stage{position:relative;overflow:hidden;isolation:isolate;flex:none;
+  height:100vh;height:100dvh;width:calc(100vh*9/16);width:calc(100dvh*9/16);max-width:100vw;container-type:size;
+  background:radial-gradient(ellipse 80% 55% at 50% 42%,rgba(231,161,182,.38),transparent 70%),radial-gradient(ellipse 120% 80% at 50% 100%,#9b1c3d 0%,transparent 60%),linear-gradient(180deg,#3f0816,#6a1029 55%,#8a1a3a)}
+.stage::after{content:"";position:absolute;inset:0;z-index:95;pointer-events:none;box-shadow:inset 0 0 14cqw rgba(30,2,10,.55)}
+.batik{position:absolute;inset:0;opacity:.2;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke='%23ebcf93' stroke-width='1.1'><ellipse cx='40' cy='20' rx='11' ry='19'/><ellipse cx='40' cy='60' rx='11' ry='19'/><ellipse cx='20' cy='40' rx='19' ry='11'/><ellipse cx='60' cy='40' rx='19' ry='11'/><circle cx='40' cy='40' r='2.2' fill='%23ebcf93'/></g></svg>");background-size:16cqw;
+  -webkit-mask-image:radial-gradient(ellipse 85% 70% at 50% 45%,#000 20%,transparent 100%);mask-image:radial-gradient(ellipse 85% 70% at 50% 45%,#000 20%,transparent 100%)}
+
+/* bunga */
+.fl{position:absolute;pointer-events:none}
+.fl .sw{animation:breath var(--breath) ease-in-out infinite alternate;transform-origin:50% 100%}
+.fl img{display:block;width:100%;height:auto}
+.row3{left:-8%;width:116%;bottom:-3%;z-index:5;display:flex}
+.row3 .it{flex:0 0 auto;width:36%;margin-left:-9%}.row3 .it:first-child{margin-left:0}
+.row3 .it:nth-child(even) img{transform:scaleX(-1)}
+.b1{bottom:-4%;z-index:6;width:40%}.b1.a{left:-7%}.b1.b{right:-7%}.b1.c{left:36%;width:28%;bottom:-6%}
+.b4{top:-10%;width:74%;z-index:7}.b4.l{left:-20%}.b4.r{right:-20%}.b4.r img{transform:scaleX(-1)}
+.b4.l .sw{transform-origin:0 0}.b4.r .sw{transform-origin:100% 0}
+@keyframes breath{from{transform:rotate(-1.6deg) translateX(-1%)}to{transform:rotate(1.6deg) translateX(1%)}}
+
+/* ===== PEMBUKA: PINTU + PITA (otomatis) ===== */
+.intro{position:absolute;inset:0;z-index:80;perspective:1800px;overflow:hidden}
+.door{position:absolute;top:0;bottom:0;width:50.2%;overflow:hidden;
+  background:linear-gradient(160deg,#b8294a 0%,#8a1634 55%,#5d0d23 100%);backface-visibility:hidden;
+  transition:transform 1.8s cubic-bezier(.7,0,.2,1) .95s}
+.door::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 90% 60% at 50% 40%,rgba(255,170,190,.22),transparent 70%),repeating-linear-gradient(115deg,rgba(255,255,255,.035) 0 1px,transparent 1px 6px)}
+.door.l{left:0;transform-origin:0 50%;box-shadow:inset -.8cqw 0 2cqw rgba(30,2,10,.55)}
+.door.r{right:0;transform-origin:100% 50%;box-shadow:inset .8cqw 0 2cqw rgba(30,2,10,.55)}
+.door .o{position:absolute;width:40cqw}
+.door .o svg{display:block;width:100%;height:auto}
+.intro.open .door.l{transform:rotateY(-112deg)}
+.intro.open .door.r{transform:rotateY(112deg)}
+.seam{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(30,2,10,.6);z-index:2;transition:opacity .4s}
+.intro.open .seam{opacity:0}
+.head{position:absolute;z-index:4;top:13%;left:0;right:0;text-align:center;color:var(--cream);font-weight:500;text-shadow:0 .5cqw 2cqw rgba(30,2,10,.6);transition:opacity .7s ease .1s}
+.intro.open .head{opacity:0}
+.bow{position:absolute;z-index:5;left:50%;top:33%;width:78cqw;margin-left:-39cqw;filter:drop-shadow(0 2cqw 3cqw rgba(30,2,10,.55));animation:flo 4s ease-in-out infinite}
+@keyframes flo{50%{transform:translateY(-1.2cqw)}}
+.bow svg{display:block;width:100%;height:auto;overflow:visible}
+.bow .ll,.bow .lr,.bow .tl,.bow .tr,.bow .kn{transform-box:fill-box;transition:transform .9s cubic-bezier(.6,0,.3,1),opacity .8s ease}
+.bow .ll{transform-origin:100% 50%}.bow .lr{transform-origin:0 50%}
+.bow .tl{transform-origin:50% 0}.bow .tr{transform-origin:50% 0}.bow .kn{transform-origin:50% 50%}
+.intro.open .bow{animation:none}
+.intro.open .bow .ll{transform:scaleX(.05) rotate(-20deg);opacity:0;transition-delay:.25s}
+.intro.open .bow .lr{transform:scaleX(.05) rotate(20deg);opacity:0;transition-delay:.25s}
+.intro.open .bow .tl{transform:translateY(34cqw) rotate(-10deg);opacity:0}
+.intro.open .bow .tr{transform:translateY(34cqw) rotate(10deg);opacity:0}
+.intro.open .bow .kn{transform:scale(0);opacity:0;transition-delay:.45s}
+
+/* ===== ISI ===== */
+.back{position:absolute;z-index:30;left:4cqw;top:4cqw;font-weight:600;color:#fff;background:rgba(38,3,14,.7);border:1px solid rgba(246,223,160,.6);border-radius:5cqw;padding:2cqw 3.6cqw;text-decoration:none;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .6s}
+.stage.opened .back{opacity:1;pointer-events:auto}
+
+/* Tombol Tulis Ucapan di kiri bawah */
+.write-btn{position:absolute;z-index:30;left:4cqw;bottom:4cqw;font-weight:600;color:var(--wine);background:linear-gradient(135deg,#f6e2b0,#d9b46a);border:1px solid rgba(246,223,160,.8);border-radius:5cqw;padding:2cqw 4cqw;text-decoration:none;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .6s;box-shadow:0 1.5cqw 4cqw rgba(0,0,0,.4)}
+.stage.opened .write-btn{opacity:1;pointer-events:auto}
+
+.wrap{position:absolute;z-index:10;left:0;right:0;top:10%;bottom:6%;overflow-y:auto;padding:0 7cqw 22cqw;text-align:center;color:var(--cream);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 3%,#000 92%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 3%,#000 92%,transparent 100%)}
+.wrap::-webkit-scrollbar{width:0}
+
+/* kotak judul (diperjelas agar mudah dibaca) */
+.hd{opacity:0;position:relative;background:rgba(38,3,14,.9);border:1px solid rgba(246,223,160,.8);border-radius:3.5cqw;padding:5cqw 5cqw 5.5cqw;box-shadow:0 2cqw 7cqw rgba(0,0,0,.6)}
+.hd::before{content:"";position:absolute;inset:1.2cqw;border:1px solid rgba(246,223,160,.28);border-radius:2.6cqw;pointer-events:none}
+.hd .t{font-weight:600;color:var(--gold);margin-bottom:2.5cqw;letter-spacing:.04em}
+.hd p{font-weight:500;color:#fff;margin:0 auto}
+.stage.opened .hd{animation:rise .9s ease forwards}
+
+/* kartu rekening */
+.acc{position:relative;margin-top:5cqw;padding:6cqw 5cqw 5.5cqw;border-radius:3.5cqw;overflow:hidden;opacity:0;
+  background:linear-gradient(150deg,rgba(184,41,74,.97),rgba(122,18,48,.98) 55%,rgba(78,10,30,.98));
+  border:1px solid rgba(246,223,160,.8);box-shadow:0 2.5cqw 8cqw rgba(0,0,0,.6),0 0 0 .8cqw rgba(246,223,160,.07)}
+.acc::before{content:"";position:absolute;inset:1.4cqw;border:1px solid rgba(246,223,160,.3);border-radius:2.4cqw;pointer-events:none}
+.acc::after{content:"";position:absolute;left:-20%;top:-60%;width:80%;height:120%;background:radial-gradient(ellipse,rgba(255,200,215,.22),transparent 65%);pointer-events:none}
+.acc .sw1,.acc .sw2{position:absolute;width:20cqw;opacity:.9;pointer-events:none}
+.acc .sw1{left:1.5cqw;top:1.5cqw}.acc .sw2{right:1.5cqw;bottom:1.5cqw;transform:scale(-1,-1)}
+.acc svg{display:block;width:100%;height:auto}
+.acc>*:not(.sw1):not(.sw2){position:relative}
+.bank{font-weight:600;letter-spacing:.3em;color:var(--gold);text-shadow:0 .3cqw 1cqw rgba(0,0,0,.6)}
+.dv{display:flex;align-items:center;gap:2cqw;justify-content:center;color:var(--gold);margin:2.5cqw auto;width:55%}
+.dv b{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.no{font-weight:600;letter-spacing:.06em;color:#fff;margin:1cqw 0 1.5cqw;word-break:break-all;text-shadow:0 .4cqw 1.5cqw rgba(0,0,0,.6)}
+.an{font-weight:400;color:var(--cream)}
+.an b{color:var(--gold);font-weight:600}
+.row{display:flex;gap:2.5cqw;margin-top:4cqw;justify-content:center}
+.btn{border:0;cursor:pointer;text-decoration:none;text-align:center;font-weight:600;padding:2.8cqw 5cqw;border-radius:6cqw}
+.salin{background:transparent;color:var(--gold);border:1.5px solid var(--gold)}
+.salin.ok{background:var(--gold);color:var(--wine)}
+.buka{background:linear-gradient(135deg,#f6e2b0,#d9b46a);color:var(--wine)}
+.stage.opened .acc{animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i)*.28s + .2s)}
+@keyframes rise{from{opacity:0;transform:translateY(7cqw)}to{opacity:1;transform:none}}
+.toast{position:absolute;z-index:100;left:50%;bottom:12cqw;transform:translate(-50%,4cqw);opacity:0;background:#fff6e6;color:#4a0b1a;font-weight:600;padding:2.6cqw 5cqw;border-radius:6cqw;box-shadow:0 2cqw 6cqw rgba(0,0,0,.5);transition:all .35s ease;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="batik"></div>
+  <a class="back" href="javascript:history.back()">← Kembali</a>
+  <a class="write-btn" href="ucapan.html">✉ Tulis Ucapan</a>
+
+  <div class="wrap" id="wrap">
+    <div class="hd">
+      <div class="t">Amplop Digital<br>Kirim Hadiah</div>
+      <p>Doa restu Anda sudah menjadi hadiah terindah. Bila ingin berbagi kebahagiaan, silakan melalui rekening berikut.</p>
+    </div>
+    <div id="list"></div>
+  </div>
+
+  <!-- PEMBUKA -->
+  <div class="intro" id="intro">
+    <div class="door l" id="dl"></div>
+    <div class="door r" id="dr"></div>
+    <div class="seam"></div>
+    <div class="head">Amplop Digital<br>Fatimah &amp; Naravit</div>
+    <div class="bow">
+      <svg viewBox="0 0 300 340">
+        <defs>
+          <linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e0455f"/><stop offset=".55" stop-color="#b01f40"/><stop offset="1" stop-color="#6e0f27"/></linearGradient>
+          <linearGradient id="rg2" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0455f"/><stop offset=".55" stop-color="#b01f40"/><stop offset="1" stop-color="#6e0f27"/></linearGradient>
+          <linearGradient id="rt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c22a4a"/><stop offset="1" stop-color="#7a1230"/></linearGradient>
+        </defs>
+        <path class="tl" d="M140 125C112 190 82 250 50 322L98 304L122 336C138 272 152 200 158 132Z" fill="url(#rt)"/>
+        <path class="tr" d="M160 125C188 190 218 250 250 322L202 304L178 336C162 272 148 200 142 132Z" fill="url(#rt)"/>
+        <g class="ll"><path d="M148 112C98 36 18 46 22 104C26 152 98 152 148 124Z" fill="url(#rg)"/><path d="M140 118C104 78 58 74 44 100" fill="none" stroke="rgba(255,190,205,.45)" stroke-width="3" stroke-linecap="round"/><path d="M140 124C100 128 60 122 40 108" fill="none" stroke="rgba(60,5,20,.35)" stroke-width="3" stroke-linecap="round"/></g>
+        <g class="lr"><path d="M152 112C202 36 282 46 278 104C274 152 202 152 152 124Z" fill="url(#rg2)"/><path d="M160 118C196 78 242 74 256 100" fill="none" stroke="rgba(255,190,205,.45)" stroke-width="3" stroke-linecap="round"/><path d="M160 124C200 128 240 122 260 108" fill="none" stroke="rgba(60,5,20,.35)" stroke-width="3" stroke-linecap="round"/></g>
+        <g class="kn"><rect x="128" y="94" width="44" height="54" rx="18" fill="url(#rg)"/><path d="M136 104C148 98 158 98 166 104" fill="none" stroke="rgba(255,200,215,.6)" stroke-width="3" stroke-linecap="round"/></g>
+      </svg>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ================= ATUR REKENING DI SINI ================= */
+const REKENING = [
+  { bank:'BRI',  no:'1234 5678 9012 345', an:'Fatimah' },
+  { bank:'BCA',  no:'1234567890',         an:'Naravit' },
+  { bank:'DANA', no:'0812 3456 7890',     an:'Fatimah',
+    link:'' }   // isi link pembayaran DANA milikmu kalau ada. Kosong = tombol "Buka DANA" tidak muncul
+];
+const JEDA_BUKA = 1300;   // ms sebelum pita otomatis terbuka
+/* ========================================================== */
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---- bunga latar ---- */
+const FL={bunga4:'bunga4.png',bunga3:'bunga3.png',bunga1:'bunga1.png'};
+const svg=s=>'data:image/svg+xml;utf8,'+encodeURIComponent(s);
+function bl(cx,cy,r,c1,c2){let p='';for(let i=0;i<8;i++)p+=`<ellipse cx="${cx}" cy="${cy-r*.62}" rx="${r*.36}" ry="${r*.62}" fill="${i%2?c1:c2}" transform="rotate(${i*45} ${cx} ${cy})"/>`;return p+`<circle cx="${cx}" cy="${cy}" r="${r*.2}" fill="#f4c25b"/>`}
+const PH={
+bunga4:svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M0 0h300C260 90 190 120 120 200 70 250 30 270 0 300Z" fill="#2c5a3a"/>${bl(70,80,60,'#f08aa5','#c2294f')}${bl(170,60,44,'#ffc0d0','#e0587c')}${bl(60,190,42,'#ffc0d0','#d93a65')}</svg>`),
+bunga3:svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260"><path d="M0 260V150c60-40 110 10 200-20s150 10 200-10v140Z" fill="#2c5a3a"/>${bl(70,150,52,'#ffc0d0','#d93a65')}${bl(190,120,60,'#f08aa5','#a3203f')}${bl(310,150,50,'#ffc0d0','#e0587c')}${bl(130,215,40,'#f08aa5','#c2294f')}${bl(260,220,44,'#ffc0d0','#d93a65')}</svg>`),
+bunga1:svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 380"><path d="M150 380V170" stroke="#2c5a3a" stroke-width="10"/><path d="M150 300c-60-10-90-50-100-90 50 0 90 30 100 90ZM150 270c60-10 90-50 100-90-50 0-90 30-100 90Z" fill="#3b7a4d"/>${bl(150,120,95,'#ffc0d0','#c2294f')}</svg>`)};
+const im=k=>`<img src="${FL[k]}" alt="" onerror="this.onerror=null;this.src=PH['${k}']">`;
+const sw=(k,d)=>`<div class="sw" style="animation-delay:${d}s">${im(k)}</div>`;
+$('stage').insertAdjacentHTML('afterbegin',
+ `<div class="fl row3">${[-.2,-1.4,-.8,-2].map(d=>`<div class="it">${sw('bunga3',d)}</div>`).join('')}</div>
+  <div class="fl b1 a">${sw('bunga1',-.6)}</div><div class="fl b1 b">${sw('bunga1',-1.6)}</div><div class="fl b1 c">${sw('bunga1',-1)}</div>
+  <div class="fl b4 l">${sw('bunga4',0)}</div><div class="fl b4 r">${sw('bunga4',-1)}</div>`);
+
+/* ---- ukiran melengkung ---- */
+const SW=c=>`<svg viewBox="0 0 100 100"><g fill="none" stroke="${c}" stroke-width="1.4" stroke-linecap="round"><path d="M4 96C4 52 36 12 92 6"/><path d="M16 96C18 64 40 38 84 30"/><path d="M28 96C32 76 52 60 76 56"/><path d="M92 6C70 4 52 18 56 34C60 46 76 44 74 34"/><path d="M84 30C68 30 60 44 68 54"/><circle cx="74" cy="34" r="2.2" fill="${c}"/></g></svg>`;
+const oc='rgba(255,205,215,.34)';
+$('dl').innerHTML=`<div class="o" style="left:2cqw;top:3cqw">${SW(oc)}</div><div class="o" style="left:2cqw;bottom:3cqw;transform:scaleY(-1)">${SW(oc)}</div>`;
+$('dr').innerHTML=`<div class="o" style="right:2cqw;top:3cqw;transform:scaleX(-1)">${SW(oc)}</div><div class="o" style="right:2cqw;bottom:3cqw;transform:scale(-1,-1)">${SW(oc)}</div>`;
+
+/* ---- kartu rekening ---- */
+const gc='rgba(246,223,160,.55)';
+$('list').innerHTML=REKENING.map((r,i)=>`
+  <div class="acc" style="--i:${i}">
+    <div class="sw1">${SW(gc)}</div><div class="sw2">${SW(gc)}</div>
+    <div class="bank">${esc(r.bank)}</div>
+    <div class="dv"><b></b>♥<b></b></div>
+    <div class="no">${esc(r.no)}</div>
+    <div class="an">atas nama <b>${esc(r.an)}</b></div>
+    <div class="row">
+      <button class="btn salin" data-i="${i}">SALIN NO. REK</button>
+      ${r.link?`<a class="btn buka" href="${esc(r.link)}" target="_blank" rel="noopener">BUKA ${esc(r.bank)}</a>`:''}
+    </div>
+  </div>`).join('');
+
+/* ---- pita terbuka otomatis ---- */
+setTimeout(()=>{
+  $('intro').classList.add('open');
+  setTimeout(()=>$('stage').classList.add('opened'),1700);
+  setTimeout(()=>$('intro').style.display='none',3200);
+},JEDA_BUKA);
+
+/* ---- salin ---- */
+let tt;
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2200)}
+async function salin(teks){
+  try{await navigator.clipboard.writeText(teks);return true}catch(e){}
+  try{const a=document.createElement('textarea');a.value=teks;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();const ok=document.execCommand('copy');a.remove();return ok}catch(e){return false}
+}
+$('list').addEventListener('click',async e=>{
+  const b=e.target.closest('.salin');if(!b)return;
+  const r=REKENING[+b.dataset.i],ok=await salin(r.no.replace(/\s+/g,''));
+  if(ok){b.classList.add('ok');b.textContent='TERSALIN ✓';toast('No. rekening '+r.bank+' tersalin');
+    setTimeout(()=>{b.classList.remove('ok');b.textContent='SALIN NO. REK'},2500)}
+  else toast('Gagal menyalin, salin manual ya');
+});
+</script>
+</body>
+</html>
