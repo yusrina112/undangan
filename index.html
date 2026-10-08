@@ -2,7 +2,12 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="10;url=pembukaan.html">
+<link rel="preload" as="image" href="rumah.png">
+<link rel="preload" as="image" href="pohon_1.png">
+<link rel="preload" as="image" href="pohon_2.png">
+<link rel="preload" as="image" href="bunga1.png">
+<link rel="preload" as="image" href="bunga3.png">
+<link rel="preload" as="image" href="bunga4.png">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Happy Wedding Day — Fatimah &amp; Naravit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +17,7 @@
   :root{
     --wine:#4a0b1a; --burgundy:#7a1230; --crimson:#a3203f;
     --rose:#e7a1b6; --gold:#ebcf93; --cream:#fcefd9;
-    --breath:6.4s;            /* kecepatan napas pohon & bunga (SAMA semua) */
+    --breath:5s;             /* kecepatan napas pohon & bunga (SAMA semua) */
     --house-y:55%;            /* posisi tengah rumah (naik/turun) */
     --text-y:28%;             /* posisi tengah tulisan (naik/turun) */
   }
@@ -31,6 +36,12 @@
       radial-gradient(ellipse 120% 80% at 50% 100%, #9b1c3d 0%, transparent 60%),
       linear-gradient(180deg, #3f0816 0%, #6a1029 55%, #8a1a3a 100%);
   }
+  /* layar loading: menutupi panggung sampai semua gambar siap */
+  .loader{position:absolute;inset:0;z-index:40;background:#3f0816;display:grid;place-items:center;transition:opacity .5s ease,visibility .5s}
+  .loader i{width:9cqw;height:9cqw;border-radius:50%;border:.7cqw solid rgba(235,207,147,.25);border-top-color:var(--gold);animation:spin .9s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .stage.ready .loader{opacity:0;visibility:hidden}
+
   /* motif batik kawung tipis */
   .batik{
     position:absolute; inset:0; z-index:0; opacity:.2;
@@ -40,14 +51,14 @@
             mask-image:radial-gradient(ellipse 85% 70% at 50% 45%, #000 20%, transparent 100%);
   }
   .glow{position:absolute;left:50%;top:44%;width:90cqw;height:90cqw;translate:-50% -50%;z-index:1;
-    background:radial-gradient(circle, rgba(255,205,215,.35), transparent 62%);opacity:0;transition:opacity 4s ease 1.5s}
+    background:radial-gradient(circle, rgba(255,205,215,.35), transparent 62%);opacity:0;transition:opacity 2.4s ease .8s}
   .stage.go .glow{opacity:1}
   .stage::after{content:"";position:absolute;inset:0;z-index:20;pointer-events:none;
     box-shadow:inset 0 0 14cqw rgba(30,2,10,.55)}
 
   /* ===== LAPISAN: .fly = gerak keluar (intro), .sw = gerak napas ===== */
   .fly{
-    position:absolute; will-change:transform;
+    position:absolute;
     transform:translate3d(var(--dx,0px),var(--dy,0px),0) scale(var(--s,1));
   }
   .stage.go .fly{
@@ -55,8 +66,8 @@
     transition:transform var(--dur,3.4s) var(--ease,cubic-bezier(.65,0,.25,1)) var(--d,0s);
   }
   .stage.nofx .fly{transition:none!important;transform:translate3d(var(--dx,0px),var(--dy,0px),0) scale(var(--s,1))!important}
-  .fly img,.fly .sw{display:block;width:100%;height:auto;-webkit-user-drag:none;user-select:none}
-  .sw{will-change:transform;transform-origin:var(--o,50% 100%);
+  .fly img,.fly .sw{image-rendering:auto;display:block;width:100%;height:auto;-webkit-user-drag:none;user-select:none}
+  .sw{transform-origin:var(--o,50% 100%);
       animation:breath var(--breath) ease-in-out infinite alternate;animation-delay:var(--ph,0s)}
   @keyframes breath{
     from{transform:translate3d(calc(var(--tx,0%) * -1),0,0) rotate(calc(var(--a,1.5deg) * -1))}
@@ -71,7 +82,7 @@
 
   /* rumah — gerak BEDA (melayang pelan, bukan goyang) */
   .rumah{left:0;width:100%;top:var(--house-y);height:0;z-index:3;display:flex;justify-content:center;align-items:center;pointer-events:none}
-  .rumah .sw{flex:none;width:100%;animation:house 9.5s ease-in-out infinite alternate;transform-origin:50% 50%}
+  .rumah .sw{flex:none;width:100%;animation:house 8s ease-in-out infinite alternate;transform-origin:50% 50%}
   @keyframes house{
     from{transform:translate3d(0,.6%,0) scale(1)}
     to  {transform:translate3d(0,-1.4%,0) scale(1.022)}
@@ -103,17 +114,17 @@
   /* bayangan lembut di belakang tulisan supaya nama lebih fokus */
   .text::before{content:"";position:absolute;left:50%;top:50%;width:112cqw;height:78cqw;translate:-50% -50%;z-index:-1;
         background:radial-gradient(ellipse at center, rgba(40,3,14,.62) 0%, rgba(40,3,14,.38) 42%, transparent 70%);
-        opacity:0;transition:opacity 2.4s ease}
+        opacity:0;transition:opacity 1.4s ease}
   .stage.show .text::before{opacity:1}
   .happy{font-family:'Cormorant SC','Cinzel',Georgia,serif;font-weight:600;
          font-size:5.2cqw;letter-spacing:1.1cqw;color:var(--gold);padding-left:1.1cqw}
   .names{margin-top:1.6cqw;font-family:'Pinyon Script','Great Vibes','Snell Roundhand',cursive;line-height:.9}
   .names .n{display:block;font-size:19.5cqw}
   .names .amp{display:block;font-size:10cqw;color:var(--rose);margin:0 0 -1cqw}
-  .orn{display:block;margin:3cqw auto 0;width:40cqw;height:3cqw;opacity:0;transition:opacity 2s ease 2.6s}
+  .orn{display:block;margin:3cqw auto 0;width:40cqw;height:3cqw;opacity:0;transition:opacity 1.2s ease 1.6s}
   .stage.show .orn{opacity:.9}
   .ch{display:inline-block;opacity:0;filter:blur(1.4cqw);transform:translateY(1.6cqw) scale(1.08);white-space:pre}
-  .stage.show .ch{animation:ink 1.5s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i) * 70ms)}
+  .stage.show .ch{animation:ink .9s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i) * 40ms)}
   @keyframes ink{to{opacity:1;filter:blur(0);transform:none}}
 
   /* kelopak jatuh */
@@ -141,32 +152,33 @@
 <body>
 
 <div class="stage" id="stage">
+  <div class="loader"><i></i></div>
   <div class="batik"></div>
   <div class="glow"></div>
 
   <!-- POHON -->
-  <div class="fly pohon l" data-g="tree"><div class="sw"><img data-key="pohon_1" alt=""></div></div>
-  <div class="fly pohon r rev" data-g="tree"><div class="sw"><img data-key="pohon_2" alt=""></div></div>
+  <div class="fly pohon l" data-g="tree"><div class="sw"><img decoding="sync" data-key="pohon_1" alt=""></div></div>
+  <div class="fly pohon r rev" data-g="tree"><div class="sw"><img decoding="sync" data-key="pohon_2" alt=""></div></div>
 
   <!-- RUMAH (lebih besar) -->
-  <div class="fly rumah" data-g="house"><div class="sw"><img data-key="rumah" alt=""></div></div>
+  <div class="fly rumah" data-g="house"><div class="sw"><img decoding="sync" data-key="rumah" alt=""></div></div>
 
   <!-- BUNGA 3 (hamparan bawah) -->
   <div class="fly row3" data-g="bottom">
-    <div class="it"><div class="sw" style="--ph:-.2s"><img data-key="bunga3" alt=""></div></div>
-    <div class="it"><div class="sw" style="--ph:-1.4s"><img data-key="bunga3" alt=""></div></div>
-    <div class="it"><div class="sw" style="--ph:-.8s"><img data-key="bunga3" alt=""></div></div>
-    <div class="it"><div class="sw" style="--ph:-2s"><img data-key="bunga3" alt=""></div></div>
+    <div class="it"><div class="sw" style="--ph:-.2s"><img decoding="sync" data-key="bunga3" alt=""></div></div>
+    <div class="it"><div class="sw" style="--ph:-1.4s"><img decoding="sync" data-key="bunga3" alt=""></div></div>
+    <div class="it"><div class="sw" style="--ph:-.8s"><img decoding="sync" data-key="bunga3" alt=""></div></div>
+    <div class="it"><div class="sw" style="--ph:-2s"><img decoding="sync" data-key="bunga3" alt=""></div></div>
   </div>
 
   <!-- BUNGA 1 -->
-  <div class="fly b1 a" data-g="bottom"><div class="sw" style="--ph:-.6s"><img data-key="bunga1" alt=""></div></div>
-  <div class="fly b1 b rev" data-g="bottom"><div class="sw" style="--ph:-1.6s"><img data-key="bunga1" alt=""></div></div>
-  <div class="fly b1 c" data-g="bottom"><div class="sw" style="--ph:-1s"><img data-key="bunga1" alt=""></div></div>
+  <div class="fly b1 a" data-g="bottom"><div class="sw" style="--ph:-.6s"><img decoding="sync" data-key="bunga1" alt=""></div></div>
+  <div class="fly b1 b rev" data-g="bottom"><div class="sw" style="--ph:-1.6s"><img decoding="sync" data-key="bunga1" alt=""></div></div>
+  <div class="fly b1 c" data-g="bottom"><div class="sw" style="--ph:-1s"><img decoding="sync" data-key="bunga1" alt=""></div></div>
 
   <!-- BUNGA 4 -->
-  <div class="fly b4 l" data-g="b4"><div class="sw"><img data-key="bunga4" alt=""></div></div>
-  <div class="fly b4 r rev" data-g="b4"><div class="sw"><img data-key="bunga4" alt=""></div></div>
+  <div class="fly b4 l" data-g="b4"><div class="sw"><img decoding="sync" data-key="bunga4" alt=""></div></div>
+  <div class="fly b4 r rev" data-g="b4"><div class="sw"><img decoding="sync" data-key="bunga4" alt=""></div></div>
 
   <!-- TULISAN -->
   <div class="text">
@@ -186,6 +198,7 @@
 
   <div class="ui">
     <label id="pick"><input type="file" id="files" accept="image/png" multiple>Pilih foto PNG</label>
+    <button id="music" type="button" aria-label="Musik">🔊 Musik</button>
     <button id="replay" type="button" aria-label="Putar ulang">↻ Ulang</button>
   </div>
 
@@ -226,11 +239,14 @@ PH.pohon_2 = PH.pohon_1;
 let usedFallback = false;
 function load(img, url){
   return new Promise(res=>{
-    img.onload = ()=>res(); img.onerror = ()=>{ usedFallback = true; img.onerror=null; img.onload=()=>res(); img.src = PH[img.dataset.key]; };
+    const done = ()=>{ (img.decode ? img.decode() : Promise.resolve()).catch(()=>{}).then(res); };  // tunggu sampai benar-benar ter-decode
+    img.onload = done;
+    img.onerror = ()=>{ usedFallback = true; img.onerror = null; img.onload = done; img.src = PH[img.dataset.key]; };
     img.src = url;
   });
 }
 const loadAll = () => Promise.all(imgs.map(i => load(i, SRC[i.dataset.key])));
+const wait = ms => new Promise(r => setTimeout(r, ms));
 
 /* ---------- pecah teks jadi huruf ---------- */
 let ci = 0;
@@ -253,14 +269,15 @@ for(let i=0;i<16;i++){
 /* ---------- INTRO: kumpul di tengah → perlahan menjauh ---------- */
 /* s = ukuran saat menumpuk di tengah, d = jeda mulai, t = lama bergerak (detik) */
 const CFG = {
-  tree  :{ s:1.8, d:.4,  t:3.4 },
-  b4    :{ s:1.9, d:.4,  t:3.4 },
-  bottom:{ s:1.7, d:1.3, t:3.0 },
-  house :{ s:.6,  d:0,   t:4.6, ease:'cubic-bezier(.2,.7,.2,1)' }   // rumah membesar dari jauh
+  tree  :{ s:1.8, d:.2,  t:2.0 },
+  b4    :{ s:1.9, d:.2,  t:2.0 },
+  bottom:{ s:1.7, d:.6,  t:1.8 },
+  house :{ s:.6,  d:0,   t:2.6, ease:'cubic-bezier(.2,.7,.2,1)' }   // rumah membesar dari jauh
 };
-const SHOW_AT = 3800;     // ms: kapan tulisan muncul
+const SHOW_AT = 2200;     // ms: kapan tulisan muncul
 const LOOP    = false;    // true = ulang otomatis terus
-let timer;
+let timer, redirectTimer;
+const NEXT_PAGE = 'pembukaan.html', NEXT_AFTER = 10000;   // ms setelah animasi mulai
 function start(){
   clearTimeout(timer);
   stage.classList.remove('go','show');
@@ -302,10 +319,55 @@ document.getElementById('files').addEventListener('change', e=>{
 });
 document.getElementById('replay').addEventListener('click', start);
 
+
+/* ============================================================
+   MUSIK: lagu1 → lagu2 → lagu3 → ulang. Taruh mp3 satu folder dgn HTML.
+   Browser memblokir autoplay, jadi kalau belum bunyi, musik mulai
+   di sentuhan/klik pertama. Posisi lagu disimpan agar lanjut di halaman berikut.
+   ============================================================ */
+const TRACKS = ['lagu1.mp3','lagu2.mp3','lagu3.mp3'];
+const audio = new Audio(); audio.preload = 'none';   // dimuat setelah animasi mulai, supaya tidak rebutan bandwidth
+const musicBtn = document.getElementById('music');
+let ti = 0, muted = false, seek = 0;
+try{
+  const sv = JSON.parse(localStorage.getItem('bgm') || 'null');
+  if(sv){ ti = (sv.i|0) % TRACKS.length; muted = !!sv.m; seek = sv.t || 0; }
+}catch(e){}
+audio.src = TRACKS[ti];
+audio.addEventListener('loadedmetadata', ()=>{ if(seek){ try{ audio.currentTime = seek; }catch(e){} seek = 0; } }, {once:true});
+audio.addEventListener('ended', ()=>{ ti = (ti+1) % TRACKS.length; audio.src = TRACKS[ti]; audio.play().catch(()=>{}); });
+const saveBgm = ()=>{ try{ localStorage.setItem('bgm', JSON.stringify({i:ti, t:audio.currentTime||0, m:muted})); }catch(e){} };
+setInterval(saveBgm, 1000); addEventListener('pagehide', saveBgm);
+const label = ()=>{ musicBtn.textContent = muted ? '🔇 Musik' : '🔊 Musik'; };
+const GEST = ['pointerdown','touchstart','keydown','click'];
+function unlock(){ if(muted) return; audio.play().then(()=>GEST.forEach(g=>removeEventListener(g, unlock, true))).catch(()=>{}); }
+GEST.forEach(g=>addEventListener(g, unlock, true));
+musicBtn.addEventListener('click', e=>{
+  e.stopPropagation(); muted = !muted; label();
+  if(muted) audio.pause(); else audio.play().catch(()=>{});
+  saveBgm();
+});
+label();
+
 /* ---------- jalan ---------- */
-(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(loadAll).then(()=>{
+const fontsReady = Promise.race([
+  Promise.all([
+    document.fonts.load('600 1em "Cormorant SC"'),
+    document.fonts.load('1em "Pinyon Script"')
+  ]).catch(()=>{}),
+  wait(3000)
+]);
+const imagesReady = Promise.race([loadAll(), wait(12000)]);   // maksimal tunggu 12 detik
+
+Promise.all([fontsReady, imagesReady]).then(()=>{
   if(usedFallback) document.getElementById('pick').style.display = 'inline-block';
-  start();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    stage.classList.add('ready');          // buka layar loading
+    start();                               // baru mulai animasi
+    audio.preload = 'auto';                // sekarang musik boleh mulai di-download
+    unlock();                              // coba autoplay (kalau diblokir, mulai di sentuhan pertama)
+    redirectTimer = setTimeout(()=>{ location.href = NEXT_PAGE; }, NEXT_AFTER);
+  }));
 });
 </script>
 </body>
