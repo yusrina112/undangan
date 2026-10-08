@@ -235,6 +235,7 @@ const cps=[...document.querySelectorAll('.cp')];let t=0;
 function place(){cps.forEach((c,k)=>{const p=(k+t)%5;
   if(p===0){c.classList.add('nt');c.dataset.p=p;requestAnimationFrame(()=>requestAnimationFrame(()=>c.classList.remove('nt')))}else c.dataset.p=p})}
 place();setInterval(()=>{t++;place()},2000);
+
 </script>
 </body>
 </html>
