@@ -37,6 +37,7 @@ input:focus,textarea:focus{border-color:var(--gold2)}
 textarea{height:30cqw;resize:none;line-height:1.45}
 .cnt{text-align:right;font:500 3cqw 'Lora',serif;color:rgba(255,255,255,.8);margin-top:1cqw}
 .btn{display:block;width:100%;border:0;cursor:pointer;font:700 4cqw 'Cormorant SC',serif;letter-spacing:.14em;color:var(--wine);background:linear-gradient(135deg,#f6e2b0,#d9b46a);padding:3.4cqw;border-radius:7cqw;box-shadow:0 1.5cqw 5cqw rgba(0,0,0,.5);margin-top:4cqw}
+.btn:disabled{opacity:.6;cursor:wait}
 .btn.alt{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(246,223,160,.7);font-size:3.6cqw}
 .err{color:#ffb4b4;font:600 3.4cqw 'Lora',serif;margin-top:2cqw;min-height:4cqw}
 
@@ -72,11 +73,11 @@ textarea{height:30cqw;resize:none;line-height:1.45}
 .nav-top-left,.nav-top-right{top:calc(4cqw + env(safe-area-inset-top,0px))}
 .show-ttl{top:calc(4.5cqw + env(safe-area-inset-top,0px))}
 .show-bar{bottom:calc(5cqw + env(safe-area-inset-bottom,0px))}
-input,textarea{font-size:max(16px,4.6cqw)}           
+input,textarea{font-size:max(16px,4.6cqw)}
 .mbtn{position:absolute;z-index:95;right:4cqw;top:calc(4cqw + env(safe-area-inset-top,0px));
   font:700 3.4cqw 'Cormorant SC',serif;letter-spacing:.1em;color:#fff;background:rgba(38,3,14,.7);
   border:1px solid rgba(246,223,160,.6);border-radius:50px;padding:2cqw 3.6cqw;cursor:pointer;white-space:nowrap}
-#vShow.on ~ .mbtn{top:calc(15cqw + env(safe-area-inset-top,0px))}   
+#vShow.on ~ .mbtn{top:calc(15cqw + env(safe-area-inset-top,0px))}
 </style>
 </head>
 <body>
@@ -121,10 +122,10 @@ input,textarea{font-size:max(16px,4.6cqw)}
 
 <script>
 const NAMA_A='Fatimah', NAMA_B='Naravit';
-const DB_URL='https://yuki-9263c-default-rtdb.firebaseio.com/';          
-const FLIP7=false;        
+const DB_URL='https://yuki-9263c-default-rtdb.firebaseio.com/';
+const FLIP7=false;
 const FL={bunga4:'bunga4.png',bunga7:'bunga7.png'};
-const DETIK=3;            
+const DETIK=3;
 
 const $=id=>document.getElementById(id);$('own').textContent=NAMA_A+' & '+NAMA_B;
 
@@ -138,11 +139,28 @@ document.querySelectorAll('img[data-k]').forEach(fix);
 
 const LS='ucapan_fn',DB=DB_URL.replace(/\/$/,'');
 async function loadAll(){
-  if(DB){try{const d=await (await fetch(DB+'/ucapan.json')).json();return d?Object.values(d).sort((a,b)=>a.t-b.t):[]}catch(e){}}
+  if(DB){
+    try{
+      const r=await fetch(DB+'/ucapan.json');
+      const d=await r.json();
+      if(!r.ok||(d&&d.error)) throw new Error((d&&d.error)||r.status);
+      return d?Object.values(d).filter(o=>o&&o.isi).sort((a,b)=>a.t-b.t):[];
+    }catch(e){ console.error('Firebase baca gagal:',e); }
+  }
   try{return JSON.parse(localStorage.getItem(LS)||'[]')}catch(e){return[]}
 }
 async function saveOne(o){
-  if(DB){try{const r=await fetch(DB+'/ucapan.json',{method:'POST',body:JSON.stringify(o)});return r.ok}catch(e){return false}}
+  if(DB){
+    try{
+      const r=await fetch(DB+'/ucapan.json',{method:'POST',body:JSON.stringify(o)});
+      if(!r.ok){
+        let m=r.status; try{ m=(await r.json()).error||m }catch(_){}
+        window.lastDbError=m; console.error('Firebase simpan gagal:',r.status,m);
+        return false;
+      }
+      return true;
+    }catch(e){ window.lastDbError=e.message; console.error('Firebase simpan error:',e); return false; }
+  }
   try{const a=JSON.parse(localStorage.getItem(LS)||'[]');a.push(o);localStorage.setItem(LS,JSON.stringify(a));return true}catch(e){return false}
 }
 
@@ -190,16 +208,17 @@ $('isi').addEventListener('input',()=>$('c').textContent=$('isi').value.length);
   const nama=$('nama').value.trim(),isi=$('isi').value.trim();
   if(!nama){$('err').textContent='Isi namamu dulu ya.';return}
   if(!isi){$('err').textContent='Tulis ucapannya dulu ya.';return}
-  $('err').textContent='';$('kirim').textContent='MENGIRIM...';
+  $('err').textContent='';$('kirim').textContent='MENGIRIM...';$('kirim').disabled=true;
   const ok=await saveOne({nama,isi,t:Date.now()});
-  $('kirim').textContent='KIRIM UCAPAN';
-  if(!ok){$('err').textContent='Gagal menyimpan, coba lagi.';return}$('nama').value='';$('isi').value='';$('c').textContent=0;
+  $('kirim').textContent='KIRIM UCAPAN';$('kirim').disabled=false;
+  if(!ok){$('err').textContent='Gagal menyimpan: '+(window.lastDbError||'coba lagi');return}
+  $('nama').value='';$('isi').value='';$('c').textContent=0;
   showSlides('last');
 });
 
 /* ================= SISTEM MEMORI MUSIK (PLAYLIST & LOOPING) ================= */
 const TRACKS=['lagu1.mp3','lagu2.mp3','lagu3.mp3'];
-const START_TIMES=[15,20,13];                 
+const START_TIMES=[15,20,13];
 const audio=new Audio(); audio.preload='auto';
 const musicBtn=$('music');
 const num=(k,d)=>{const v=parseFloat(localStorage.getItem(k));return isNaN(v)?d:v};
@@ -209,12 +228,12 @@ if(isNaN(trackIndex)||trackIndex<0||trackIndex>=TRACKS.length) trackIndex=0;
 let isMuted=localStorage.getItem('bgm_muted')==='true';
 let seekTo=num('bgm_time',0);
 const gap=(Date.now()-num('bgm_ts',0))/1000;
-if(!isMuted && seekTo>0 && gap>=0 && gap<4) seekTo+=gap;     
+if(!isMuted && seekTo>0 && gap>=0 && gap<4) seekTo+=gap;
 if(seekTo<=0) seekTo=START_TIMES[trackIndex];
 
 audio.src=TRACKS[trackIndex];
 audio.addEventListener('loadedmetadata',()=>{
-  if(audio.duration && seekTo>=audio.duration-0.3){ nextTrack(); return; }   
+  if(audio.duration && seekTo>=audio.duration-0.3){ nextTrack(); return; }
   try{ audio.currentTime=seekTo; }catch(e){}
 });
 function nextTrack(){
