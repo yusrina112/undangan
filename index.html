@@ -4,11 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Happy Wedding Day — Fatimah &amp; Naravit</title>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="rumah.png">
+<link rel="preload" as="image" href="pohon_1.png">
+<link rel="preload" as="image" href="pohon_2.png">
+<link rel="preload" as="image" href="bunga1.png">
+<link rel="preload" as="image" href="bunga3.png">
+<link rel="preload" as="image" href="bunga4.png">
 <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+SC:wght@500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-
 <style>
   :root {
     --wine: #4a0b1a;
@@ -26,7 +30,6 @@
   html, body { height: 100%; background: #3f0816; overflow: hidden; font-family: 'Poppins', sans-serif; }
   body { display: flex; justify-content: center; align-items: center; }
 
-  /* ===== PANGGUNG ===== */
   .stage {
     position: relative; overflow: hidden; isolation: isolate; flex: none;
     height: 100vh; height: 100dvh;
@@ -38,20 +41,14 @@
       linear-gradient(180deg, #3f0816 0%, #6a1029 55%, #8a1a3a 100%);
   }
 
-  /* KUALITAS GRAFIS HD & RENDERING TAJAM */
-  img, svg {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    shape-rendering: geometricPrecision;
-  }
+  img { image-rendering: auto; }
+  svg { shape-rendering: geometricPrecision; }
 
-  /* LOADING SCREEN */
-  .loader { position: absolute; inset: 0; z-index: 40; background: #3f0816; display: grid; place-items: center; transition: opacity .5s ease, visibility .5s; }
+  .loader { position: absolute; inset: 0; z-index: 40; background: #3f0816; display: grid; place-items: center; transition: opacity .3s ease, visibility .3s; }
   .loader i { width: 9cqw; height: 9cqw; border-radius: 50%; border: .7cqw solid rgba(235,207,147,.25); border-top-color: var(--gold); animation: spin .9s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .stage.ready .loader { opacity: 0; visibility: hidden; }
 
-  /* MOTIF BATIK */
   .batik {
     position: absolute; inset: 0; z-index: 0; opacity: .2;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke='%23ebcf93' stroke-width='1.1'><ellipse cx='40' cy='20' rx='11' ry='19'/><ellipse cx='40' cy='60' rx='11' ry='19'/><ellipse cx='20' cy='40' rx='19' ry='11'/><ellipse cx='60' cy='40' rx='19' ry='11'/><circle cx='40' cy='40' r='2.2' fill='%23ebcf93'/></g></svg>");
@@ -67,7 +64,6 @@
   .stage.go .glow { opacity: 1; }
   .stage::after { content: ""; position: absolute; inset: 0; z-index: 20; pointer-events: none; box-shadow: inset 0 0 14cqw rgba(30,2,10,.55); }
 
-  /* ===== ANIMASI ELEMEN ===== */
   .fly { position: absolute; transform: translate3d(var(--dx,0px),var(--dy,0px),0) scale(var(--s,1)); }
   .stage.go .fly {
     transform: translate3d(0,0,0) scale(1);
@@ -83,7 +79,6 @@
   }
   .rev .sw { animation-direction: alternate-reverse; }
 
-  /* ORNAMEN POHON, RUMAH, BUNGA HD */
   .pohon { bottom: 9%; width: 58%; z-index: 2; }
   .pohon.l { left: -12%; } .pohon.r { right: -12%; }
   .pohon .sw { --a: 1.3deg; --tx: .8%; --o: 50% 100%; }
@@ -112,7 +107,6 @@
   .b4 .sw { --a: 5deg; --tx: 0%; }
   .b4.r img { transform: scaleX(-1); }
 
-  /* ===== TEKS JUDUL ===== */
   .text {
     position: absolute; left: 0; right: 0; top: var(--text-y); transform: translateY(-50%); z-index: 10; text-align: center; pointer-events: none;
     color: var(--cream); text-shadow: 0 .4cqw 3cqw rgba(40,2,12,.9), 0 0 .8cqw rgba(40,2,12,.8), 0 0 6cqw rgba(255,190,205,.35);
@@ -129,40 +123,38 @@
   .names .amp { display: block; font-size: 10cqw; color: var(--rose); margin: 0 0 -1cqw; }
   .orn { display: block; margin: 3cqw auto 0; width: 40cqw; height: 3cqw; opacity: 0; transition: opacity 1.2s ease 1.6s; }
   .stage.show .orn { opacity: .9; }
-  .ch { display: inline-block; opacity: 0; filter: blur(1.4cqw); transform: translateY(1.6cqw) scale(1.08); white-space: pre; }
+  .ch { display: inline-block; opacity: 0; transform: translate3d(0,1.6cqw,0) scale(1.08); white-space: pre; will-change: opacity, transform; }
   .stage.show .ch { animation: ink .9s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(var(--i) * 40ms); }
-  @keyframes ink { to { opacity: 1; filter: blur(0); transform: none; } }
+  @keyframes ink { to { opacity: 1; transform: none; } }
 
-  /* KELOPAK JATUH */
   .petal {
     position: absolute; top: -6%; z-index: 9; width: 2.6cqw; height: 3.6cqw; border-radius: 80% 0 80% 0;
     background: linear-gradient(135deg, #ffc2d1, #d9456f); opacity: 0; pointer-events: none;
     animation: fall var(--t) linear infinite; animation-delay: var(--w);
+    animation-play-state: paused; will-change: transform;
   }
-  .stage.show .petal { opacity: .85; }
+  .stage.show .petal { opacity: .85; animation-play-state: running; }
   @keyframes fall {
     0%   { transform: translate3d(0,0,0) rotate(0); }
     50%  { transform: translate3d(var(--x),60cqh,0) rotate(200deg); }
     100% { transform: translate3d(calc(var(--x) * -.4),118cqh,0) rotate(420deg); }
   }
 
-  /* TOMBOL BACK KECIL DI KIRI BAWAH */
   .btn-back {
     position: fixed; left: 16px; bottom: 16px; z-index: 99;
-    background: rgba(38, 3, 14, 0.65); border: 1px solid rgba(235, 207, 147, 0.6);
+    background: rgba(38, 3, 14, 0.82); border: 1px solid rgba(235, 207, 147, 0.6);
     color: var(--gold); border-radius: 50px; padding: 6px 14px;
     font-size: 11px; font-weight: 500; text-decoration: none;
-    backdrop-filter: blur(6px); cursor: pointer; transition: all 0.3s ease;
+    cursor: pointer; transition: background .3s ease, color .3s ease;
     display: flex; align-items: center; gap: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);
   }
   .btn-back:hover { background: rgba(122, 18, 48, 0.85); color: #fff; transform: translateY(-2px); }
 
-  /* KONTROL UI KANAN ATAS */
   .ui { position: fixed; right: 12px; top: calc(12px + env(safe-area-inset-top,0px)); z-index: 30; display: flex; gap: 8px; }
   .ui button, .ui label {
-    font: 600 12px/1 'Poppins', sans-serif; color: var(--cream); background: rgba(40,4,14,.65);
-    border: 1px solid rgba(235,207,147,.5); border-radius: 99px; padding: 8px 12px; cursor: pointer; backdrop-filter: blur(4px);
-    transition: background 0.3s;
+    font: 600 12px/1 'Poppins', sans-serif; color: var(--cream); background: rgba(40,4,14,.82);
+    border: 1px solid rgba(235,207,147,.5); border-radius: 99px; padding: 8px 12px; cursor: pointer;
+    transition: background .3s;
   }
   .ui button:hover { background: rgba(122,18,48,.8); }
 </style>
@@ -174,14 +166,11 @@
   <div class="batik"></div>
   <div class="glow"></div>
 
-  <!-- POHON VEC HD -->
   <div class="fly pohon l" data-g="tree"><div class="sw"><img data-key="pohon_1" alt=""></div></div>
   <div class="fly pohon r rev" data-g="tree"><div class="sw"><img data-key="pohon_2" alt=""></div></div>
 
-  <!-- RUMAH HD -->
   <div class="fly rumah" data-g="house"><div class="sw"><img data-key="rumah" alt=""></div></div>
 
-  <!-- BUNGA 3 (HAMPARAN BAWAH) HD -->
   <div class="fly row3" data-g="bottom">
     <div class="it"><div class="sw" style="--ph:-.2s"><img data-key="bunga3" alt=""></div></div>
     <div class="it"><div class="sw" style="--ph:-1.4s"><img data-key="bunga3" alt=""></div></div>
@@ -189,16 +178,13 @@
     <div class="it"><div class="sw" style="--ph:-2s"><img data-key="bunga3" alt=""></div></div>
   </div>
 
-  <!-- BUNGA 1 HD -->
   <div class="fly b1 a" data-g="bottom"><div class="sw" style="--ph:-.6s"><img data-key="bunga1" alt=""></div></div>
   <div class="fly b1 b rev" data-g="bottom"><div class="sw" style="--ph:-1.6s"><img data-key="bunga1" alt=""></div></div>
   <div class="fly b1 c" data-g="bottom"><div class="sw" style="--ph:-1s"><img data-key="bunga1" alt=""></div></div>
 
-  <!-- BUNGA 4 HD -->
   <div class="fly b4 l" data-g="b4"><div class="sw"><img data-key="bunga4" alt=""></div></div>
   <div class="fly b4 r rev" data-g="b4"><div class="sw"><img data-key="bunga4" alt=""></div></div>
 
-  <!-- TULISAN JUDUL -->
   <div class="text">
     <div class="happy" data-split>Happy Wedding Day</div>
     <div class="names">
@@ -213,21 +199,16 @@
   </div>
 </div>
 
-<!-- TOMBOL BACK KECIL DI KIRI BAWAH -->
 <a href="javascript:history.back()" class="btn-back" onclick="event.stopPropagation()">
   <span>←</span> <span>Kembali</span>
 </a>
 
-<!-- PANEL UI KANAN ATAS -->
 <div class="ui">
   <button id="music" type="button" onclick="event.stopPropagation()">🔊 Musik</button>
   <button id="replay" type="button" onclick="event.stopPropagation(); start();">↻ Ulang</button>
 </div>
 
 <script>
-/* ============================================================
-   1. PENANGANAN GRAFIS HD (VEKTOR HD + FALLBACK SVG)
-   ============================================================ */
 const SRC = {
   bunga4 : 'bunga4.png',
   bunga3 : 'bunga3.png',
@@ -267,7 +248,6 @@ function load(img, url){
 const loadAll = () => Promise.all(imgs.map(i => load(i, SRC[i.dataset.key])));
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
-/* SPLIT TEKS */
 let ci = 0;
 document.querySelectorAll('[data-split]').forEach(el => {
   const t = el.textContent; el.textContent = ''; el.setAttribute('aria-label', t);
@@ -277,7 +257,6 @@ document.querySelectorAll('[data-split]').forEach(el => {
   });
 });
 
-/* KELOPAK BUNGAMU JATUH */
 for(let i=0; i<16; i++){
   const p = document.createElement('i'); p.className = 'petal';
   p.style.left = (Math.random()*100)+'%';
@@ -288,7 +267,6 @@ for(let i=0; i<16; i++){
   stage.appendChild(p);
 }
 
-/* ANIMASI KELUAR (INTRO) */
 const CFG = {
   tree  : { s:1.8, d:.2, t:2.0 },
   b4    : { s:1.9, d:.2, t:2.0 },
@@ -298,7 +276,7 @@ const CFG = {
 const SHOW_AT = 2200;
 const NEXT_PAGE = 'pembukaan.html';
 const NEXT_AFTER = 9000;
-let timer, redirectTimer;
+let timer, redirectTimer, firstRun = true;
 
 function start(){
   clearTimeout(timer); clearTimeout(redirectTimer);
@@ -308,7 +286,7 @@ function start(){
   const flys = [...stage.querySelectorAll('.fly')];
   flys.forEach(f => { f.style.setProperty('--dx','0px'); f.style.setProperty('--dy','0px'); f.style.setProperty('--s','1'); });
   const rects = flys.map(f => f.getBoundingClientRect());
-  
+
   flys.forEach((f,k) => {
     const r = rects[k], g = f.dataset.g;
     f.style.setProperty('--dx', (cx-(r.left+r.width/2))+'px');
@@ -323,100 +301,127 @@ function start(){
   void stage.offsetWidth;
   stage.classList.remove('nofx');
   void stage.offsetWidth;
-  
+
   requestAnimationFrame(() => requestAnimationFrame(() => {
+    // lagu & animasi dimulai di frame yang sama -> sinkron
+    if (firstRun) { firstRun = false; if (!isMuted) cur.play().catch(()=>{}); }
     stage.classList.add('go');
     timer = setTimeout(() => stage.classList.add('show'), SHOW_AT);
-    redirectTimer = setTimeout(() => { window.location.href = NEXT_PAGE; }, NEXT_AFTER);
+    redirectTimer = setTimeout(() => { persist(); window.location.href = NEXT_PAGE; }, NEXT_AFTER);
   }));
 }
 
 function lanjutKlick(e){
   clearTimeout(redirectTimer);
+  persist();
   window.location.href = NEXT_PAGE;
 }
 
-/* ============================================================
-   2. AUDIO CONTINUITY SYSTEM (LAGU1 -> LAGU2 -> LAGU3 LOOPING)
-   TIDAK AKAN RESET / BERGANTI SEBELUM LAGU AKTIF SELESAI
-   ============================================================ */
+/* ================= AUDIO ================= */
 const TRACKS = ['lagu1.mp3', 'lagu2.mp3', 'lagu3.mp3'];
-const audio = new Audio();
+const START_TIMES = [15, 20, 13];
+const K = { i:'bgm_index', t:'bgm_time', ts:'bgm_ts', p:'bgm_playing', m:'bgm_muted' };
+const ls = {
+  get(k){ try { return localStorage.getItem(k); } catch(_) { return null; } },
+  set(k,v){ try { localStorage.setItem(k, v); } catch(_) {} }
+};
 const musicBtn = document.getElementById('music');
 
-let trackIndex = parseInt(localStorage.getItem('bgm_index') || '0', 10);
-let savedTime  = parseFloat(localStorage.getItem('bgm_time') || '0');
-let isMuted    = localStorage.getItem('bgm_muted') === 'true';
+let trackIndex = parseInt(ls.get(K.i) || '0', 10);
+if (!(trackIndex >= 0 && trackIndex < TRACKS.length)) trackIndex = 0;
+let isMuted = ls.get(K.m) === 'true';
 
-if (isNaN(trackIndex) || trackIndex >= TRACKS.length) trackIndex = 0;
+// posisi lanjut: waktu tersimpan + waktu yang lewat saat pindah halaman
+let resumeAt = parseFloat(ls.get(K.t) || '0');
+const savedTs = parseFloat(ls.get(K.ts) || '0');
+if (ls.get(K.p) === '1' && savedTs) {
+  const gap = (Date.now() - savedTs) / 1000;
+  if (gap >= 0 && gap < 10) resumeAt += gap;
+}
+if (!(resumeAt > START_TIMES[trackIndex])) resumeAt = START_TIMES[trackIndex];
 
-audio.src = TRACKS[trackIndex];
+const mkAudio = () => { const a = new Audio(); a.preload = 'auto'; return a; };
+let cur = mkAudio(), spare = mkAudio();
 
-audio.addEventListener('loadedmetadata', () => {
-  if (savedTime > 0 && savedTime < audio.duration) {
-    audio.currentTime = savedTime;
-  }
-});
-
-/* SANGAT PENTING: Lagu HANYA ganti jika lagu sebelumnya SELESAI (ended) */
-audio.addEventListener('ended', () => {
-  trackIndex = (trackIndex + 1) % TRACKS.length;
-  localStorage.setItem('bgm_index', trackIndex.toString());
-  localStorage.setItem('bgm_time', '0');
-  audio.src = TRACKS[trackIndex];
-  if (!isMuted) audio.play().catch(()=>{});
-});
-
-/* Simpan progress detik lagu secara berkala agar lanjut mulus saat pindah HTML */
-setInterval(() => {
-  if (!audio.paused) {
-    localStorage.setItem('bgm_index', trackIndex.toString());
-    localStorage.setItem('bgm_time', audio.currentTime.toString());
-  }
-}, 500);
-
-window.addEventListener('beforeunload', () => {
-  localStorage.setItem('bgm_index', trackIndex.toString());
-  localStorage.setItem('bgm_time', audio.currentTime.toString());
-});
-
-function updateMusicButton() {
-  musicBtn.textContent = isMuted ? '🔇 Musik' : '🔊 Musik';
+// load + seek + tunggu siap, supaya play() langsung bunyi tanpa jeda
+function prime(el, idx, at){
+  return new Promise(res => {
+    const to = setTimeout(res, 3000);
+    const done = () => { clearTimeout(to); res(); };
+    el.src = TRACKS[idx];
+    el.addEventListener('loadedmetadata', () => {
+      let t = at;
+      if (isFinite(el.duration) && t > el.duration - 1) t = START_TIMES[idx];
+      el.addEventListener('seeked', () => {
+        if (el.readyState >= 3) done(); else el.addEventListener('canplay', done, { once:true });
+      }, { once:true });
+      el.currentTime = t;
+    }, { once:true });
+    el.load();
+  });
 }
 
-function toggleMusic() {
-  isMuted = !isMuted;
-  localStorage.setItem('bgm_muted', isMuted ? 'true' : 'false');
-  updateMusicButton();
-  if (isMuted) {
-    audio.pause();
-  } else {
-    audio.play().catch(()=>{});
-  }
-}
+const nextIdx = i => (i + 1) % TRACKS.length;
+const audioReady = prime(cur, trackIndex, resumeAt);
+audioReady.then(() => prime(spare, nextIdx(trackIndex), START_TIMES[nextIdx(trackIndex)]));
 
-musicBtn.addEventListener('click', (e) => {
+// ganti lagu tanpa jeda: lagu berikutnya sudah di-preload di elemen cadangan
+function onEnded(e){
+  if (e.target !== cur) return;
+  const old = cur; cur = spare; spare = old;
+  trackIndex = nextIdx(trackIndex);
+  ls.set(K.i, trackIndex); ls.set(K.t, START_TIMES[trackIndex]);
+  try { if (cur.currentTime < START_TIMES[trackIndex] - 1) cur.currentTime = START_TIMES[trackIndex]; } catch(_) {}
+  if (!isMuted) cur.play().catch(()=>{});
+  prime(spare, nextIdx(trackIndex), START_TIMES[nextIdx(trackIndex)]);
+}
+cur.addEventListener('ended', onEnded);
+spare.addEventListener('ended', onEnded);
+
+function persist(){
+  if (cur.paused) return;
+  ls.set(K.i, trackIndex);
+  ls.set(K.t, cur.currentTime);
+  ls.set(K.ts, Date.now());
+  ls.set(K.p, '1');
+}
+setInterval(persist, 1000);
+window.addEventListener('pagehide', persist);
+document.addEventListener('visibilitychange', () => { if (document.hidden) persist(); });
+
+function updateMusicButton(){ musicBtn.textContent = isMuted ? '🔇 Musik' : '🔊 Musik'; }
+
+musicBtn.addEventListener('click', e => {
   e.stopPropagation();
-  toggleMusic();
+  isMuted = !isMuted;
+  ls.set(K.m, isMuted ? 'true' : 'false');
+  updateMusicButton();
+  if (isMuted) { cur.pause(); ls.set(K.p, '0'); }
+  else cur.play().catch(()=>{});
 });
 
-/* Autoplay unlock pada sentuhan pertama jika diblokir browser */
-function unlockAudio() {
-  if (!isMuted && audio.paused) {
-    audio.play().then(() => {
-      ['click', 'touchstart'].forEach(evt => document.removeEventListener(evt, unlockAudio, true));
-    }).catch(() => {});
-  }
+// kalau browser blokir autoplay, nyalakan di sentuhan pertama
+const UNLOCK_EVT = ['click', 'touchend', 'keydown'];
+function unlockAudio(){
+  if (isMuted) return;
+  if (!cur.paused) { UNLOCK_EVT.forEach(ev => document.removeEventListener(ev, unlockAudio, true)); return; }
+  cur.play().then(() => {
+    UNLOCK_EVT.forEach(ev => document.removeEventListener(ev, unlockAudio, true));
+  }).catch(()=>{});
 }
-['click', 'touchstart'].forEach(evt => document.addEventListener(evt, unlockAudio, true));
-
+UNLOCK_EVT.forEach(ev => document.addEventListener(ev, unlockAudio, true));
 updateMusicButton();
 
-/* MEMULAI PENAMPILAN HALAMAN */
-Promise.all([loadAll(), wait(1500)]).then(() => {
+/* ================= MULAI ================= */
+const fontsReady = Promise.race([document.fonts ? document.fonts.ready : 0, wait(2500)]);
+Promise.all([
+  Promise.race([loadAll(), wait(8000)]),
+  fontsReady,
+  audioReady,
+  wait(250)
+]).then(() => {
   stage.classList.add('ready');
   start();
-  if (!isMuted) audio.play().catch(()=>{});
 });
 </script>
 

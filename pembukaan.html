@@ -181,7 +181,11 @@
       Dengan memohon rahmat dan ridho-Nya, kami bermaksud menyelenggarakan pernikahan kami.
     </div>
   </div>
+</div>
 
+<!-- TOMBOL MUSIK -->
+<div class="ui" style="position: fixed; right: 12px; top: 12px; z-index: 30; display: flex; gap: 8px;">
+  <button id="music" type="button" style="font: 600 12px/1 system-ui, sans-serif; color: #fcefd9; background: rgba(40,4,14,.65); border: 1px solid rgba(235,207,147,.5); border-radius: 99px; padding: 8px 12px; cursor: pointer;">🔊 Musik</button>
 </div>
 
 <script>
@@ -266,6 +270,81 @@ function start(){
   start();
 });
 
+// ===== MULAI SCRIPT MEMORI MUSIK =====
+const TRACKS = ['lagu1.mp3', 'lagu2.mp3', 'lagu3.mp3'];
+const START_TIMES = [15, 20, 13]; 
+const audio = new Audio();
+const musicBtn = document.getElementById('music');
+
+let trackIndex = parseInt(localStorage.getItem('bgm_index') || '0', 10);
+let savedTime  = parseFloat(localStorage.getItem('bgm_time') || '0');
+let isMuted    = localStorage.getItem('bgm_muted') === 'true';
+
+if (isNaN(trackIndex) || trackIndex >= TRACKS.length) trackIndex = 0;
+
+audio.src = TRACKS[trackIndex];
+
+audio.addEventListener('loadedmetadata', () => {
+  if (savedTime > START_TIMES[trackIndex] && savedTime < audio.duration) {
+    audio.currentTime = savedTime;
+  } else {
+    audio.currentTime = START_TIMES[trackIndex];
+  }
+});
+
+// Jika lagu beres, pindah ke lagu berikutnya
+audio.addEventListener('ended', () => {
+  trackIndex = (trackIndex + 1) % TRACKS.length;
+  localStorage.setItem('bgm_index', trackIndex.toString());
+  
+  savedTime = START_TIMES[trackIndex];
+  localStorage.setItem('bgm_time', savedTime.toString());
+  
+  audio.src = TRACKS[trackIndex];
+  if (!isMuted) audio.play().catch(()=>{});
+});
+
+// Rekam waktu lagu setiap setengah detik
+setInterval(() => {
+  if (!audio.paused) {
+    localStorage.setItem('bgm_index', trackIndex.toString());
+    localStorage.setItem('bgm_time', audio.currentTime.toString());
+  }
+}, 500);
+
+// Simpan waktu sesaat sebelum pindah halaman
+window.addEventListener('beforeunload', () => {
+  localStorage.setItem('bgm_index', trackIndex.toString());
+  localStorage.setItem('bgm_time', audio.currentTime.toString());
+});
+
+function updateMusicButton() {
+  musicBtn.textContent = isMuted ? '🔇 Musik' : '🔊 Musik';
+}
+
+musicBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  isMuted = !isMuted;
+  localStorage.setItem('bgm_muted', isMuted ? 'true' : 'false');
+  updateMusicButton();
+  if (isMuted) audio.pause();
+  else audio.play().catch(()=>{});
+});
+
+updateMusicButton();
+
+// Putar otomatis jika tidak di-mute (menyesuaikan aturan browser)
+function unlockAudio() {
+  if (!isMuted && audio.paused) {
+    audio.play().then(() => {
+      ['click', 'touchstart'].forEach(evt => document.removeEventListener(evt, unlockAudio, true));
+    }).catch(() => {});
+  }
+}
+['click', 'touchstart'].forEach(evt => document.addEventListener(evt, unlockAudio, true));
+
+if (!isMuted) audio.play().catch(()=>{});
+// ===== AKHIR SCRIPT MEMORI MUSIK =====
 </script>
 </body>
 </html>

@@ -67,6 +67,16 @@ textarea{height:30cqw;resize:none;line-height:1.45}
 .cn{font:600 3.6cqw 'Cormorant SC',serif;letter-spacing:.2em;color:#fff;text-shadow:0 .3cqw 1cqw #000}
 .show-bar .btn{width:auto;margin:0;padding:2.6cqw 5cqw;font-size:3.6cqw}
 .show-ttl{position:absolute;z-index:20;top:4.5cqw;left:0;right:0;text-align:center;font:400 9cqw 'Pinyon Script',cursive;color:#fff;text-shadow:0 .4cqw 2cqw #000;pointer-events:none}
+
+/* ===== TAMBAHAN: responsif + tombol musik ===== */
+.nav-top-left,.nav-top-right{top:calc(4cqw + env(safe-area-inset-top,0px))}
+.show-ttl{top:calc(4.5cqw + env(safe-area-inset-top,0px))}
+.show-bar{bottom:calc(5cqw + env(safe-area-inset-bottom,0px))}
+input,textarea{font-size:max(16px,4.6cqw)}           
+.mbtn{position:absolute;z-index:95;right:4cqw;top:calc(4cqw + env(safe-area-inset-top,0px));
+  font:700 3.4cqw 'Cormorant SC',serif;letter-spacing:.1em;color:#fff;background:rgba(38,3,14,.7);
+  border:1px solid rgba(246,223,160,.6);border-radius:50px;padding:2cqw 3.6cqw;cursor:pointer;white-space:nowrap}
+#vShow.on ~ .mbtn{top:calc(15cqw + env(safe-area-inset-top,0px))}   
 </style>
 </head>
 <body>
@@ -105,28 +115,27 @@ textarea{height:30cqw;resize:none;line-height:1.45}
     <div id="track"></div>
     <div class="show-bar"><span class="cn" id="cn"></span><button class="btn" id="tulis">TULIS UCAPAN</button></div>
   </div>
+
+  <button class="mbtn" id="music" type="button" aria-label="Musik">🔊 Musik</button>
 </div>
 
 <script>
-/* ================= ATUR DI SINI ================= */
 const NAMA_A='Fatimah', NAMA_B='Naravit';
-const DB_URL='';          // isi alamat Firebase Realtime Database supaya ucapan terkumpul untuk semua orang. Kosong = tersimpan di browser ini saja
-const FLIP7=false;        // ganti true kalau bunga7 di kanan bawah menghadap arah yang salah
+const DB_URL='https://yuki-9263c-default-rtdb.firebaseio.com/';          
+const FLIP7=false;        
 const FL={bunga4:'bunga4.png',bunga7:'bunga7.png'};
-const DETIK=3;            // jeda geser otomatis
-/* ================================================ */
+const DETIK=3;            
+
 const $=id=>document.getElementById(id);$('own').textContent=NAMA_A+' & '+NAMA_B;
 
-/* ---- bunga sementara kalau file belum ada ---- */
 const svg=s=>'data:image/svg+xml;utf8,'+encodeURIComponent(s);
 function bl(cx,cy,r,c1,c2){let p='';for(let i=0;i<8;i++)p+=`<ellipse cx="${cx}" cy="${cy-r*.62}" rx="${r*.36}" ry="${r*.62}" fill="${i%2?c1:c2}" transform="rotate(${i*45} ${cx} ${cy})"/>`;return p+`<circle cx="${cx}" cy="${cy}" r="${r*.2}" fill="#f4c25b"/>`}
 const PH={
 bunga4:svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M0 0h300C260 90 190 120 120 200 70 250 30 270 0 300Z" fill="#2c5a3a"/>${bl(70,80,60,'#f08aa5','#c2294f')}${bl(170,60,44,'#ffc0d0','#e0587c')}${bl(60,190,42,'#ffc0d0','#d93a65')}</svg>`),
-bunga7:svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M300 300H0C50 220 110 190 180 120 230 80 270 40 300 0Z" fill="#2c5a3a"/>${bl(230,230,58,'#ffc0d0','#d93a65')}${bl(120,250,44,'#f08aa5','#c2294f')}${bl(240,120,42,'#ffc0d0','#e0587c')}</svg>`)};
+bunga7:svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><path d="M300 300H0C50 220 110 190 180 120 230 80 270 40 300 0Z" fill="#2c5a3a"/>${bl(230,230,58,'#ffc0d0','#d93a65')}${bl(120,250,44,'#ffc0d0','#c2294f')}${bl(240,120,42,'#ffc0d0','#e0587c')}</svg>`)};
 function fix(img){const k=img.dataset.k;img.onerror=()=>{img.onerror=null;img.src=PH[k]};img.src=FL[k]}
 document.querySelectorAll('img[data-k]').forEach(fix);
 
-/* ---- penyimpanan ---- */
 const LS='ucapan_fn',DB=DB_URL.replace(/\/$/,'');
 async function loadAll(){
   if(DB){try{const d=await (await fetch(DB+'/ucapan.json')).json();return d?Object.values(d).sort((a,b)=>a.t-b.t):[]}catch(e){}}
@@ -137,7 +146,6 @@ async function saveOne(o){
   try{const a=JSON.parse(localStorage.getItem(LS)||'[]');a.push(o);localStorage.setItem(LS,JSON.stringify(a));return true}catch(e){return false}
 }
 
-/* ---- kartu ---- */
 function makeCard(o){
   const d=document.createElement('div');d.className='card';
   d.innerHTML=`<img class="f4" data-k="bunga4" alt=""><img class="f7${FLIP7?' flip':''}" data-k="bunga7" alt="">
@@ -157,7 +165,6 @@ function makeCard(o){
   return d;
 }
 
-/* ---- slide ---- */
 let list=[],idx=0,timer,cards=[];
 function pos(){
   cards.forEach((c,i)=>{const d=i-idx;
@@ -179,7 +186,6 @@ async function showSlides(start){
 $('vShow').addEventListener('click',e=>{if(e.target.closest('#tulis') || e.target.closest('.nav-top-right'))return;next()});
 $('tulis').addEventListener('click',e=>{e.stopPropagation();clearTimeout(timer);$('vShow').classList.remove('on');$('vForm').classList.add('on')});$('lihat').addEventListener('click',()=>showSlides(0));
 
-/* ---- form ---- */
 $('isi').addEventListener('input',()=>$('c').textContent=$('isi').value.length);$('kirim').addEventListener('click',async()=>{
   const nama=$('nama').value.trim(),isi=$('isi').value.trim();
   if(!nama){$('err').textContent='Isi namamu dulu ya.';return}
@@ -190,6 +196,69 @@ $('isi').addEventListener('input',()=>$('c').textContent=$('isi').value.length);
   if(!ok){$('err').textContent='Gagal menyimpan, coba lagi.';return}$('nama').value='';$('isi').value='';$('c').textContent=0;
   showSlides('last');
 });
+
+/* ================= SISTEM MEMORI MUSIK (PLAYLIST & LOOPING) ================= */
+const TRACKS=['lagu1.mp3','lagu2.mp3','lagu3.mp3'];
+const START_TIMES=[15,20,13];                 
+const audio=new Audio(); audio.preload='auto';
+const musicBtn=$('music');
+const num=(k,d)=>{const v=parseFloat(localStorage.getItem(k));return isNaN(v)?d:v};
+
+let trackIndex=parseInt(localStorage.getItem('bgm_index')||'0',10);
+if(isNaN(trackIndex)||trackIndex<0||trackIndex>=TRACKS.length) trackIndex=0;
+let isMuted=localStorage.getItem('bgm_muted')==='true';
+let seekTo=num('bgm_time',0);
+const gap=(Date.now()-num('bgm_ts',0))/1000;
+if(!isMuted && seekTo>0 && gap>=0 && gap<4) seekTo+=gap;     
+if(seekTo<=0) seekTo=START_TIMES[trackIndex];
+
+audio.src=TRACKS[trackIndex];
+audio.addEventListener('loadedmetadata',()=>{
+  if(audio.duration && seekTo>=audio.duration-0.3){ nextTrack(); return; }   
+  try{ audio.currentTime=seekTo; }catch(e){}
+});
+function nextTrack(){
+  trackIndex=(trackIndex+1)%TRACKS.length;
+  seekTo=START_TIMES[trackIndex];
+  audio.src=TRACKS[trackIndex];
+  saveBgm(true);
+  if(!isMuted) audio.play().catch(()=>{});
+}
+audio.addEventListener('ended',nextTrack);
+
+function saveBgm(force){
+  if(!force && audio.paused) return;
+  localStorage.setItem('bgm_index',trackIndex);
+  localStorage.setItem('bgm_time',audio.currentTime||0);
+  localStorage.setItem('bgm_ts',Date.now());
+}
+setInterval(saveBgm,250);
+addEventListener('pagehide',()=>saveBgm());
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) saveBgm(); });
+
+const warm=new Audio(); warm.preload='auto';
+audio.addEventListener('playing',()=>{
+  const n=TRACKS[(trackIndex+1)%TRACKS.length];
+  if(warm.dataset.s!==n){ warm.dataset.s=n; warm.src=n; }
+});
+
+function updateMusicButton(){ musicBtn.textContent=isMuted?'🔇 Musik':'🔊 Musik'; }
+musicBtn.addEventListener('click',e=>{
+  e.stopPropagation();
+  isMuted=!isMuted;
+  localStorage.setItem('bgm_muted',isMuted?'true':'false');
+  updateMusicButton();
+  if(isMuted) audio.pause(); else audio.play().catch(()=>{});
+});
+
+const GEST=['click','touchend','pointerup','keydown'];
+function unlockAudio(){
+  if(isMuted||!audio.paused) return;
+  audio.play().then(()=>GEST.forEach(ev=>document.removeEventListener(ev,unlockAudio,true))).catch(()=>{});
+}
+GEST.forEach(ev=>document.addEventListener(ev,unlockAudio,true));
+updateMusicButton();
+if(!isMuted) audio.play().catch(()=>{});
 </script>
 </body>
 </html>

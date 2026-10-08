@@ -151,6 +151,18 @@
     50%{transform:translate3d(var(--x),60cqh,0) rotate(200deg)}
     100%{transform:translate3d(calc(var(--x) * -.4),118cqh,0) rotate(420deg)}
   }
+
+  /* Tombol Musik (Kanan Bawah) */
+  .mbtn{position:absolute;z-index:110;right:4cqw;bottom:4cqw;width:9cqw;height:9cqw;padding:0;
+    display:grid;place-items:center;font-size:4.2cqw;line-height:1;color:#fff;background:rgba(38,3,14,.7);
+    border:1px solid rgba(246,223,160,.6);border-radius:50%;cursor:pointer}
+
+  /* Tombol unduh video (muncul hanya kalau undangan.mp4 ada di folder) */
+  .dl-btn{display:none;margin-top:3.5cqw;font-family:'Poppins',sans-serif;font-weight:600;font-size:3.6cqw;color:var(--gold);
+    background:transparent;border:1.5px solid var(--gold);padding:2.4cqw 6cqw;border-radius:30px;text-decoration:none;
+    transition:transform .2s ease,background .2s ease}
+  .dl-btn:hover{background:rgba(235,207,147,.15);transform:scale(1.05)}
+  .dl-btn.on{display:inline-block}
 </style>
 </head>
 <body>
@@ -184,12 +196,18 @@
     </div>
     <!-- Tombol menuju Google Maps -->
     <a href="https://www.google.com/maps/search/Thailand" target="_blank" class="map-btn">Buka Google Maps</a>
+    <br>
+    <!-- Unduh video undangan (taruh file undangan.mp4 satu folder dengan map.html) -->
+    <a href="undangan.mp4" download="Undangan-Fatimah-Naravit.mp4" class="dl-btn" id="dl">⬇ Unduh Video Undangan</a>
   </div>
+
+  <!-- TOMBOL MUSIK -->
+  <button class="mbtn" id="music" type="button" aria-label="Musik">🔊</button>
 
 </div>
 
 <script>
-/* Konfigurasi aset gambar (sama seperti index) */
+/* Konfigurasi aset gambar */
 const SRC = {
   bunga4 : 'bunga4.png',
   bunga3 : 'bunga3.png',
@@ -202,7 +220,7 @@ const imgs  = [...document.querySelectorAll('img[data-key]')];
 const svg = s => 'data:image/svg+xml;utf8,' + encodeURIComponent(s);
 function blossom(cx,cy,r,c1,c2){
   let p=''; for(let i=0;i<8;i++){const a=i*45;
-    p+=`<ellipse cx="${cx}" cy="${cy-r*.62}" rx="${r*.36}" ry="${r*.62}" fill="${i%2?c1:c2}" transform="rotate(${a} ${cx} ${cy})"/>`}
+    p+=`<ellipse cx="${cx}" cy="${cy-r*.62}" rx="${r*.36}" ry="${r*.62}" fill="${i%2?c1:c2}" transform="rotate(${a} ${cx} ${cy})"/>`;}
   return p+`<circle cx="${cx}" cy="${cy}" r="${r*.2}" fill="#f4c25b"/>`;
 }
 const PH = {
@@ -236,6 +254,73 @@ loadAll().then(()=>{
   });
 });
 
+/* tampilkan tombol unduh hanya kalau file videonya benar-benar ada */
+fetch('undangan.mp4',{method:'HEAD'}).then(r=>{
+  if(r.ok && (r.headers.get('content-type')||'').startsWith('video')) document.getElementById('dl').classList.add('on');
+}).catch(()=>{});
+
+/* ================= SISTEM MEMORI MUSIK (PLAYLIST & LOOPING) ================= */
+const TRACKS = ['lagu1.mp3', 'lagu2.mp3', 'lagu3.mp3'];
+const START_TIMES = [15, 20, 13];                 
+const audio = new Audio(); audio.preload = 'auto';
+const musicBtn = document.getElementById('music');
+const num = (k,d) => { const v = parseFloat(localStorage.getItem(k)); return isNaN(v) ? d : v; };
+
+let trackIndex = parseInt(localStorage.getItem('bgm_index') || '0', 10);
+if(isNaN(trackIndex) || trackIndex < 0 || trackIndex >= TRACKS.length) trackIndex = 0;
+let isMuted = localStorage.getItem('bgm_muted') === 'true';
+let seekTo = num('bgm_time', 0);
+const gap = (Date.now() - num('bgm_ts', 0)) / 1000;
+if(!isMuted && seekTo > 0 && gap >= 0 && gap < 4) seekTo += gap;     
+if(seekTo <= 0) seekTo = START_TIMES[trackIndex];
+
+audio.src = TRACKS[trackIndex];
+audio.addEventListener('loadedmetadata', () => {
+  if(audio.duration && seekTo >= audio.duration - 0.3){ nextTrack(); return; }   
+  try{ audio.currentTime = seekTo; }catch(e){}
+});
+function nextTrack(){
+  trackIndex = (trackIndex + 1) % TRACKS.length;
+  seekTo = START_TIMES[trackIndex];
+  audio.src = TRACKS[trackIndex];
+  saveBgm(true);
+  if(!isMuted) audio.play().catch(()=>{});
+}
+audio.addEventListener('ended', nextTrack);
+
+function saveBgm(force){
+  if(!force && audio.paused) return;
+  localStorage.setItem('bgm_index', trackIndex);
+  localStorage.setItem('bgm_time', audio.currentTime || 0);
+  localStorage.setItem('bgm_ts', Date.now());
+}
+setInterval(saveBgm, 250);
+addEventListener('pagehide', () => saveBgm());
+document.addEventListener('visibilitychange', () => { if(document.hidden) saveBgm(); });
+
+const warm = new Audio(); warm.preload = 'auto';
+audio.addEventListener('playing', () => {
+  const n = TRACKS[(trackIndex + 1) % TRACKS.length];
+  if(warm.dataset.s !== n){ warm.dataset.s = n; warm.src = n; }
+});
+
+function updateMusicButton(){ musicBtn.textContent = isMuted ? '🔇' : '🔊'; }
+musicBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  isMuted = !isMuted;
+  localStorage.setItem('bgm_muted', isMuted ? 'true' : 'false');
+  updateMusicButton();
+  if(isMuted) audio.pause(); else audio.play().catch(()=>{});
+});
+
+const GEST = ['click', 'touchend', 'pointerup', 'keydown'];
+function unlockAudio(){
+  if(isMuted || !audio.paused) return;
+  audio.play().then(() => GEST.forEach(ev => document.removeEventListener(ev, unlockAudio, true))).catch(()=>{});
+}
+GEST.forEach(ev => document.addEventListener(ev, unlockAudio, true));
+updateMusicButton();
+if(!isMuted) audio.play().catch(()=>{});
 </script>
 </body>
 </html>

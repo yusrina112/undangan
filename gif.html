@@ -63,7 +63,6 @@ body{display:flex;justify-content:center;align-items:center}
 .back{position:absolute;z-index:30;left:4cqw;top:4cqw;font-weight:600;color:#fff;background:rgba(38,3,14,.7);border:1px solid rgba(246,223,160,.6);border-radius:5cqw;padding:2cqw 3.6cqw;text-decoration:none;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .6s}
 .stage.opened .back{opacity:1;pointer-events:auto}
 
-/* Tombol Tulis Ucapan di kiri bawah */
 .write-btn{position:absolute;z-index:30;left:4cqw;bottom:4cqw;font-weight:600;color:var(--wine);background:linear-gradient(135deg,#f6e2b0,#d9b46a);border:1px solid rgba(246,223,160,.8);border-radius:5cqw;padding:2cqw 4cqw;text-decoration:none;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .6s;box-shadow:0 1.5cqw 4cqw rgba(0,0,0,.4)}
 .stage.opened .write-btn{opacity:1;pointer-events:auto}
 
@@ -71,14 +70,12 @@ body{display:flex;justify-content:center;align-items:center}
   -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 3%,#000 92%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 3%,#000 92%,transparent 100%)}
 .wrap::-webkit-scrollbar{width:0}
 
-/* kotak judul (diperjelas agar mudah dibaca) */
 .hd{opacity:0;position:relative;background:rgba(38,3,14,.9);border:1px solid rgba(246,223,160,.8);border-radius:3.5cqw;padding:5cqw 5cqw 5.5cqw;box-shadow:0 2cqw 7cqw rgba(0,0,0,.6)}
 .hd::before{content:"";position:absolute;inset:1.2cqw;border:1px solid rgba(246,223,160,.28);border-radius:2.6cqw;pointer-events:none}
 .hd .t{font-weight:600;color:var(--gold);margin-bottom:2.5cqw;letter-spacing:.04em}
 .hd p{font-weight:500;color:#fff;margin:0 auto}
 .stage.opened .hd{animation:rise .9s ease forwards}
 
-/* kartu rekening */
 .acc{position:relative;margin-top:5cqw;padding:6cqw 5cqw 5.5cqw;border-radius:3.5cqw;overflow:hidden;opacity:0;
   background:linear-gradient(150deg,rgba(184,41,74,.97),rgba(122,18,48,.98) 55%,rgba(78,10,30,.98));
   border:1px solid rgba(246,223,160,.8);box-shadow:0 2.5cqw 8cqw rgba(0,0,0,.6),0 0 0 .8cqw rgba(246,223,160,.07)}
@@ -103,6 +100,11 @@ body{display:flex;justify-content:center;align-items:center}
 @keyframes rise{from{opacity:0;transform:translateY(7cqw)}to{opacity:1;transform:none}}
 .toast{position:absolute;z-index:100;left:50%;bottom:12cqw;transform:translate(-50%,4cqw);opacity:0;background:#fff6e6;color:#4a0b1a;font-weight:600;padding:2.6cqw 5cqw;border-radius:6cqw;box-shadow:0 2cqw 6cqw rgba(0,0,0,.5);transition:all .35s ease;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Tombol Musik (Kanan Bawah) */
+.mbtn{position:absolute;z-index:110;right:4cqw;bottom:4cqw;width:9cqw;height:9cqw;padding:0;
+  display:grid;place-items:center;font-size:4.2cqw;line-height:1;color:#fff;background:rgba(38,3,14,.7);
+  border:1px solid rgba(246,223,160,.6);border-radius:50%;cursor:pointer}
 </style>
 </head>
 <body>
@@ -118,6 +120,9 @@ body{display:flex;justify-content:center;align-items:center}
     </div>
     <div id="list"></div>
   </div>
+
+  <!-- TOMBOL MUSIK -->
+  <button class="mbtn" id="music" type="button" aria-label="Musik">🔊</button>
 
   <!-- PEMBUKA -->
   <div class="intro" id="intro">
@@ -144,20 +149,16 @@ body{display:flex;justify-content:center;align-items:center}
 </div>
 
 <script>
-/* ================= ATUR REKENING DI SINI ================= */
 const REKENING = [
   { bank:'BRI',  no:'1234 5678 9012 345', an:'Fatimah' },
   { bank:'BCA',  no:'1234567890',         an:'Naravit' },
-  { bank:'DANA', no:'0812 3456 7890',     an:'Fatimah',
-    link:'' }   // isi link pembayaran DANA milikmu kalau ada. Kosong = tombol "Buka DANA" tidak muncul
+  { bank:'DANA', no:'0812 3456 7890',     an:'Fatimah', link:'' }
 ];
-const JEDA_BUKA = 1300;   // ms sebelum pita otomatis terbuka
-/* ========================================================== */
+const JEDA_BUKA = 1300;   
 
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-/* ---- bunga latar ---- */
 const FL={bunga4:'bunga4.png',bunga3:'bunga3.png',bunga1:'bunga1.png'};
 const svg=s=>'data:image/svg+xml;utf8,'+encodeURIComponent(s);
 function bl(cx,cy,r,c1,c2){let p='';for(let i=0;i<8;i++)p+=`<ellipse cx="${cx}" cy="${cy-r*.62}" rx="${r*.36}" ry="${r*.62}" fill="${i%2?c1:c2}" transform="rotate(${i*45} ${cx} ${cy})"/>`;return p+`<circle cx="${cx}" cy="${cy}" r="${r*.2}" fill="#f4c25b"/>`}
@@ -172,13 +173,11 @@ $('stage').insertAdjacentHTML('afterbegin',
   <div class="fl b1 a">${sw('bunga1',-.6)}</div><div class="fl b1 b">${sw('bunga1',-1.6)}</div><div class="fl b1 c">${sw('bunga1',-1)}</div>
   <div class="fl b4 l">${sw('bunga4',0)}</div><div class="fl b4 r">${sw('bunga4',-1)}</div>`);
 
-/* ---- ukiran melengkung ---- */
 const SW=c=>`<svg viewBox="0 0 100 100"><g fill="none" stroke="${c}" stroke-width="1.4" stroke-linecap="round"><path d="M4 96C4 52 36 12 92 6"/><path d="M16 96C18 64 40 38 84 30"/><path d="M28 96C32 76 52 60 76 56"/><path d="M92 6C70 4 52 18 56 34C60 46 76 44 74 34"/><path d="M84 30C68 30 60 44 68 54"/><circle cx="74" cy="34" r="2.2" fill="${c}"/></g></svg>`;
 const oc='rgba(255,205,215,.34)';
 $('dl').innerHTML=`<div class="o" style="left:2cqw;top:3cqw">${SW(oc)}</div><div class="o" style="left:2cqw;bottom:3cqw;transform:scaleY(-1)">${SW(oc)}</div>`;
 $('dr').innerHTML=`<div class="o" style="right:2cqw;top:3cqw;transform:scaleX(-1)">${SW(oc)}</div><div class="o" style="right:2cqw;bottom:3cqw;transform:scale(-1,-1)">${SW(oc)}</div>`;
 
-/* ---- kartu rekening ---- */
 const gc='rgba(246,223,160,.55)';
 $('list').innerHTML=REKENING.map((r,i)=>`
   <div class="acc" style="--i:${i}">
@@ -193,14 +192,12 @@ $('list').innerHTML=REKENING.map((r,i)=>`
     </div>
   </div>`).join('');
 
-/* ---- pita terbuka otomatis ---- */
 setTimeout(()=>{
   $('intro').classList.add('open');
   setTimeout(()=>$('stage').classList.add('opened'),1700);
   setTimeout(()=>$('intro').style.display='none',3200);
 },JEDA_BUKA);
 
-/* ---- salin ---- */
 let tt;
 function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2200)}
 async function salin(teks){
@@ -214,6 +211,71 @@ $('list').addEventListener('click',async e=>{
     setTimeout(()=>{b.classList.remove('ok');b.textContent='SALIN NO. REK'},2500)}
   else toast('Gagal menyalin, salin manual ya');
 });
+
+/* ================================================================
+   SISTEM MEMORI MUSIK (PLAYLIST & LOOPING)
+   ================================================================ */
+const TRACKS=['lagu1.mp3','lagu2.mp3','lagu3.mp3'];
+const START_TIMES=[15,20,13];                 
+const audio=new Audio(); audio.preload='auto';
+const musicBtn=document.getElementById('music');
+const num=(k,d)=>{const v=parseFloat(localStorage.getItem(k));return isNaN(v)?d:v};
+
+let trackIndex=parseInt(localStorage.getItem('bgm_index')||'0',10);
+if(isNaN(trackIndex)||trackIndex<0||trackIndex>=TRACKS.length) trackIndex=0;
+let isMuted=localStorage.getItem('bgm_muted')==='true';
+let seekTo=num('bgm_time',0);
+const gap=(Date.now()-num('bgm_ts',0))/1000;
+if(!isMuted && seekTo>0 && gap>=0 && gap<4) seekTo+=gap;     
+if(seekTo<=0) seekTo=START_TIMES[trackIndex];
+
+audio.src=TRACKS[trackIndex];
+audio.addEventListener('loadedmetadata',()=>{
+  if(audio.duration && seekTo>=audio.duration-0.3){ nextTrack(); return; }   
+  try{ audio.currentTime=seekTo; }catch(e){}
+});
+function nextTrack(){
+  trackIndex=(trackIndex+1)%TRACKS.length;
+  seekTo=START_TIMES[trackIndex];
+  audio.src=TRACKS[trackIndex];
+  saveBgm(true);
+  if(!isMuted) audio.play().catch(()=>{});
+}
+audio.addEventListener('ended',nextTrack);
+
+function saveBgm(force){
+  if(!force && audio.paused) return;
+  localStorage.setItem('bgm_index',trackIndex);
+  localStorage.setItem('bgm_time',audio.currentTime||0);
+  localStorage.setItem('bgm_ts',Date.now());
+}
+setInterval(saveBgm,250);
+addEventListener('pagehide',()=>saveBgm());
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) saveBgm(); });
+
+const warm=new Audio(); warm.preload='auto';
+audio.addEventListener('playing',()=>{
+  const n=TRACKS[(trackIndex+1)%TRACKS.length];
+  if(warm.dataset.s!==n){ warm.dataset.s=n; warm.src=n; }
+});
+
+function updateMusicButton(){ musicBtn.textContent=isMuted?'🔇':'🔊'; }
+musicBtn.addEventListener('click',e=>{
+  e.stopPropagation();
+  isMuted=!isMuted;
+  localStorage.setItem('bgm_muted',isMuted?'true':'false');
+  updateMusicButton();
+  if(isMuted) audio.pause(); else audio.play().catch(()=>{});
+});
+
+const GEST=['click','touchend','pointerup','keydown'];
+function unlockAudio(){
+  if(isMuted||!audio.paused) return;
+  audio.play().then(()=>GEST.forEach(ev=>document.removeEventListener(ev,unlockAudio,true))).catch(()=>{});
+}
+GEST.forEach(ev=>document.addEventListener(ev,unlockAudio,true));
+updateMusicButton();
+if(!isMuted) audio.play().catch(()=>{});
 </script>
 </body>
 </html>
